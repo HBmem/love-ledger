@@ -17,6 +17,7 @@ public class NotableDayMapper implements RowMapper<NotableDay> {
         notableDay.setDescription(resultSet.getString("description"));
         notableDay.setDay(resultSet.getInt("day"));
         notableDay.setMonth(resultSet.getInt("month"));
+        notableDay.setYear(resultSet.getInt("year"));
 
         return notableDay;
     }

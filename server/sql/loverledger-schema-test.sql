@@ -117,7 +117,8 @@ create table notable_day (
     `name` varchar(100) not null,
     `description` text,
     `day` int not null,
-    `month` int not null
+    `month` int not null,
+    `year` int 
 );
 
 create table reminder (
@@ -201,8 +202,10 @@ begin
     insert into relationship_milestone(relationship_id, milestone_id, date_awarded) values
 		(1, 1, '2024-03-11');
 
-	insert into notable_day(notable_day_id, `name`, `description`, `day`, `month`) values
-		(1, 'valentines day', "A day of love celebrated around the world", 14, 2);
+	insert into notable_day(notable_day_id, `name`, `description`, `day`, `month`, `year`) values
+		(1, 'Valentines Day', 'A day of love celebrated around the world.', 14, 2, -1),
+        (2, 'Thanksgiving 2024', 'Time to meet the family.', 28, 11, 2024),
+        (3, 'Christmas Day', 'Winter Time! it\'s time to settle with the family.', 25, 12, -1);
         
     insert into reminder(reminder_id, `name`, `date`, `description`, user_id, notable_day_id) values
 		(1, 'Birthday', '2024-01-04', 'I\'s your love interests birthday today.', 1, null);

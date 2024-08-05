@@ -8,6 +8,7 @@ public class NotableDay {
     private String description;
     private int day;
     private int month;
+    private int year;
 
     public int getNotableDayId() {
         return notableDayId;
@@ -47,5 +48,13 @@ public class NotableDay {
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

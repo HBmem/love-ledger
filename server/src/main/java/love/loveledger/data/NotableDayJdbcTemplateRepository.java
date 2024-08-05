@@ -20,7 +20,7 @@ public class NotableDayJdbcTemplateRepository implements NotableDayRepository {
 
     @Override
     public List<NotableDay> findAll() {
-        final String sql = "select notable_day_id, `name`, `description`, `day`, `month` "
+        final String sql = "select notable_day_id, `name`, `description`, `day`, `month`, `year` "
                 + "from notable_day;";
 
         return jdbcTemplate.query(sql, new NotableDayMapper());
@@ -28,8 +28,8 @@ public class NotableDayJdbcTemplateRepository implements NotableDayRepository {
 
     @Override
     public NotableDay findById(int notableDayId) {
-        final String sql = "select notable_day_id, `name`, `description`, `day`, `month` "
-                + "from notable_day"
+        final String sql = "select notable_day_id, `name`, `description`, `day`, `month`, `year` "
+                + "from notable_day "
                 + "where notable_day_id = ?";
 
         return jdbcTemplate.query(sql, new NotableDayMapper(), notableDayId).stream()
@@ -39,8 +39,8 @@ public class NotableDayJdbcTemplateRepository implements NotableDayRepository {
 
     @Override
     public NotableDay add(NotableDay notableDay) {
-        final String sql = "insert into notable_day(`name`, `description`, `day`, `month`) "
-                + "values (?,?,?,?);";
+        final String sql = "insert into notable_day(`name`, `description`, `day`, `month`, `year`) "
+                + "values (?,?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -49,6 +49,7 @@ public class NotableDayJdbcTemplateRepository implements NotableDayRepository {
             ps.setString(2, notableDay.getDescription());
             ps.setInt(3, notableDay.getDay());
             ps.setInt(4, notableDay.getMonth());
+            ps.setInt(5, notableDay.getYear());
             return ps;
         }, keyHolder);
 
