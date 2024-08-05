@@ -14,7 +14,7 @@ public class CommunicationMapper implements RowMapper<Communication> {
         Communication communication = new Communication();
 
         communication.setCommunicationId(resultSet.getInt("communication_id"));
-        communication.setType(CommunicationType.valueOf(resultSet.getString("communication_type")));
+        communication.setType(CommunicationType.valueOf(resultSet.getString("type")));
         communication.setDescription(resultSet.getString("description"));
         communication.setDate(resultSet.getDate("date").toLocalDate());
         communication.setMoodScore(resultSet.getInt("mood_score"));

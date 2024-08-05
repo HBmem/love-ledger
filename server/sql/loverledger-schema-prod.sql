@@ -112,13 +112,25 @@ create table relationship_milestone (
         references milestone(milestone_id)
 );
 
+create table notable_day (
+	notable_day_id int primary key auto_increment,
+    `name` varchar(100) not null,
+    `description` text,
+    `day` int not null,
+    `month` int not null
+);
+
 create table reminder (
 	reminder_id int primary key auto_increment,
     `name` varchar(100) not null,
-    `date` date not null,
     `description` text,
+    `date` date not null,
     user_id int not null,
+    notable_day_id int,
     constraint fk_reminder_user_id
 		foreign key (user_id)
-        references `user`(user_id)
+        references `user`(user_id),
+	constraint fk_reminder_notable_day_id
+		foreign key (notable_day_id)
+        references notable_day(notable_day_id)
 );

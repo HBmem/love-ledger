@@ -112,15 +112,27 @@ create table relationship_milestone (
         references milestone(milestone_id)
 );
 
+create table notable_day (
+	notable_day_id int primary key auto_increment,
+    `name` varchar(100) not null,
+    `description` text,
+    `day` int not null,
+    `month` int not null
+);
+
 create table reminder (
 	reminder_id int primary key auto_increment,
     `name` varchar(100) not null,
-    `date` date not null,
     `description` text,
+    `date` date not null,
     user_id int not null,
+    notable_day_id int,
     constraint fk_reminder_user_id
 		foreign key (user_id)
-        references `user`(user_id)
+        references `user`(user_id),
+	constraint fk_reminder_notable_day_id
+		foreign key (notable_day_id)
+        references notable_day(notable_day_id)
 );
 
 delimiter //
@@ -129,6 +141,8 @@ begin
 
 	delete from reminder;
     alter table reminder auto_increment = 1;
+    delete from notable_day;
+    alter table notable_day auto_increment = 1;
     delete from relationship_milestone;
     delete from outing;
     alter table outing auto_increment = 1;
@@ -161,7 +175,8 @@ begin
 	
     insert into milestone(milestone_id, `name`, `description`) values
 		(1, 'New Relationship', 'The start of something new hopefully this one goes somewhere.'),
-        (2, '1 Month', 'We lasted a month! hopefully we keep going.');
+        (2, '1 Month', 'We lasted a month! hopefully we keep going.'),
+        (3, 'First Valentine', 'We celebrated our first valentine!');
 	
     insert into love_interest(love_interest_id, nickname, fname, lname, gender, birthday, hobbies, likes, dislikes, user_id) values
 		(1, 'Princess', 'Fiona', 'Ogre', 'FEMALE', '1996-04-28', 'fighting;singing;dancing', 'color green;birds;fights', 'short people;color pink', 1),
@@ -169,10 +184,26 @@ begin
         (3, null, 'Ash', 'Kechum', 'MALE', '2000-04-13', 'animals; animal abuse', 'pokemon', 'team rocket', 2);
         
 	insert into relationship(relationship_id, start_date, end_date, is_official, labels, user_id, love_interest_id) values
-		(1, '2024-05-01', null, true, '', 1, 1);
+		(1, '2024-05-01', null, true, '', 2, 2),
+        (2, '2023-11-02', '2024-04-29', true, '', 2, 2),
+        (3, '2023-12-25', null, true, '', 1, 1);
 
 	insert into communication(communication_id, `date`, `type`, `description`, mood_score, relationship_id) values
-		(1,'2024-6-10', 'TEXT', 'Talked about fighting', 4, 1);
+		(1, '2024-06-10', 'TEXT', 'Talked about fighting', 4, 1),
+        (2, '2024-05-05', 'TEXT', 'Talked about ideas for a date', 5, 1),
+        (3, '2024-05-10', 'PHONE_CALL', 'Talked about their parent\'s resent illness', 3, 1);
+        
+	insert into outing(outing_id, `name`, outing_type, `description`, location, outcome, start_time, end_time, relationship_id) values
+		(1, 'Feb 1st Park Date', 'DATE', 'Went to the park with my date. We talked for a while then took a walk together.', 'Overton Park', 'The date was fun', '2024-02-01 03:00:00', '2024-02-01 04:00:00', 1);
+	
+    insert into relationship_milestone(relationship_id, milestone_id, date_awarded) values
+		(1, 1, '2024-03-11');
+
+	insert into notable_day(notable_day_id, `name`, `description`, `day`, `month`) values
+		(1, 'valentines day', "A day of love celebrated around the world", 14, 2);
+        
+    insert into reminder(reminder_id, `name`, `date`, `description`, user_id, notable_day_id) values
+		(1, 'Birthday', '2024-01-04', 'I\'s your love interests birthday today.', 1, null);
         
 end //
 delimiter ;

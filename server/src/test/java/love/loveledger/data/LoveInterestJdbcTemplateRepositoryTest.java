@@ -14,9 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class LoveInterestJdbcTemplateRepositoryTest {
-
-    final static int NEXT_ID = 1;
-
     @Autowired
     LoveInterestJdbcTemplateRepository repository;
 
@@ -46,6 +43,7 @@ class LoveInterestJdbcTemplateRepositoryTest {
         LoveInterest loveInterest = repository.findLoveInterestById(1);
         assertNotNull(loveInterest);
 
+        assertEquals(1, loveInterest.getUserId());
         assertEquals("Princess", loveInterest.getNickname());
         assertEquals("Fiona", loveInterest.getFirstName());
         assertEquals("Ogre", loveInterest.getLastName());
@@ -54,7 +52,6 @@ class LoveInterestJdbcTemplateRepositoryTest {
         assertEquals("fighting;singing;dancing", loveInterest.getHobbiesString());
         assertEquals("color green;birds;fights", loveInterest.getLikesString());
         assertEquals("short people;color pink", loveInterest.getDislikesString());
-        assertEquals(1, loveInterest.getUserId());
     }
 
     @Test

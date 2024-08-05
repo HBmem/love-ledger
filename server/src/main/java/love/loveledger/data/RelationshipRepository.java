@@ -5,7 +5,9 @@ import love.loveledger.models.Relationship;
 import java.util.List;
 
 public interface RelationshipRepository {
-    List<Relationship> findAllUserRelationship(int userId);
+    List<Relationship> findAllRelationshipByUserId(int userId);
+
+    Relationship findRelationshipById(int relationshipId);
 
     Relationship add(Relationship relationship);
 

@@ -13,21 +13,23 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
-public class CommunicationJdbcTemplateRepository {
+public class CommunicationJdbcTemplateRepository implements CommunicationRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public CommunicationJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Communication> findAllCommunicationByUserId(int userId) {
+    @Override
+    public List<Communication> findAllCommunicationByRelationshipId(int userId) {
         final String sql = "select communication_id, `date`, `type`, `description`, mood_score, relationship_id "
                 + "from communication "
-                + "where user_id = ?;";
+                + "where relationship_id = ?;";
 
         return jdbcTemplate.query(sql, new CommunicationMapper(), userId);
     }
 
+    @Override
     public Communication findCommunicationById(int communicationId) {
         final String sql = "select communication_id, `date`, `type`, `description`, mood_score, relationship_id "
                 + "from communication "
@@ -38,6 +40,7 @@ public class CommunicationJdbcTemplateRepository {
                 .orElse(null);
     }
 
+    @Override
     public Communication add(Communication communication) {
         final String sql = "insert into communication(`type`, `description`, `date`, mood_score, relationship_id) "
                 + "values (?,?,?,?,?);";
@@ -61,6 +64,7 @@ public class CommunicationJdbcTemplateRepository {
         return communication;
     }
 
+    @Override
     public boolean update(Communication communication) {
         final String sql = "update communication set "
                 + "`type` = ?, "
@@ -79,7 +83,8 @@ public class CommunicationJdbcTemplateRepository {
                 communication.getCommunicationId()) > 0;
     }
 
-    public boolean delete(int communication_id) {
-        return jdbcTemplate.update("delete from communication where communication_id = ?;", communication_id) > 0;
+    @Override
+    public boolean delete(int communicationId) {
+        return jdbcTemplate.update("delete from communication where communication_id = ?;", communicationId) > 0;
     }
 }

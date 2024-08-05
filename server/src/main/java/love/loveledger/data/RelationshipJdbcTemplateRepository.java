@@ -20,12 +20,23 @@ public class RelationshipJdbcTemplateRepository implements RelationshipRepositor
     }
 
     @Override
-    public List<Relationship> findAllUserRelationship(int userId) {
+    public List<Relationship> findAllRelationshipByUserId(int userId) {
         final String sql = "select relationship_id, start_date, end_date, is_official, labels, user_id, love_interest_id "
                 + "from relationship "
                 + "where user_id = ?;";
 
         return jdbcTemplate.query(sql, new RelationshipMapper(), userId);
+    }
+
+    @Override
+    public Relationship findRelationshipById(int relationshipId) {
+        final String sql = "select relationship_id, start_date, end_date, is_official, labels, user_id, love_interest_id "
+                + "from relationship "
+                + "where relationship_id = ?;";
+
+        return jdbcTemplate.query(sql, new RelationshipMapper(), relationshipId).stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -61,7 +72,7 @@ public class RelationshipJdbcTemplateRepository implements RelationshipRepositor
                 + "is_official = ?, "
                 + "labels = ?, "
                 + "user_id = ?, "
-                + "love_interest_id ? "
+                + "love_interest_id = ? "
                 + "where relationship_id = ?;";
 
         return jdbcTemplate.update(sql,
