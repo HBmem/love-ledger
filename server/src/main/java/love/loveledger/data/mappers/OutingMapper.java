@@ -14,7 +14,7 @@ public class OutingMapper implements RowMapper<Outing> {
 
         outing.setOutingId(resultSet.getInt("outing_id"));
         outing.setName(resultSet.getString("name"));
-        outing.setOutingType(OutingType.valueOf(resultSet.getString("outing_type")));
+        outing.setType(OutingType.valueOf(resultSet.getString("type")));
         outing.setDescription(resultSet.getString("description"));
         outing.setLocation(resultSet.getString("location"));
         outing.setOutcome(resultSet.getString("outcome"));

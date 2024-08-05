@@ -22,7 +22,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public List<Outing> findAllOutingsByRelationshipId(int relationshipId) {
-        final String sql = "select outing_id, `name`, outing_type, `description`, location, outcome, start_time, end_time, relationship_id"
+        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id "
                 + "from outing "
                 + "where relationship_id = ?;";
 
@@ -31,7 +31,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public Outing findOutingById(int outingId) {
-        final String sql = "select outing_id, `name`, outing_type, `description`, location, outcome, start_time, end_time, relationship_id"
+        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id "
                 + "from outing "
                 + "where outing_id = ?;";
 
@@ -42,14 +42,14 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public Outing add(Outing outing) {
-        final String sql = "insert into outing(`name`, outing_type, `description`, location, outcome, start_time, end_time, relationship_id) "
+        final String sql = "insert into outing(`name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id) "
                 + "values (?,?,?,?,?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, outing.getName());
-            ps.setString(2, outing.getOutingType().toString());
+            ps.setString(2, outing.getType().toString());
             ps.setString(3, outing.getDescription());
             ps.setString(4, outing.getLocation());
             ps.setString(5, outing.getOutcome());
@@ -71,7 +71,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
     public boolean update(Outing outing) {
         final String sql = "update outing set "
                 + "`name` = ?, "
-                + "outing_type = ?, "
+                + "`type` = ?, "
                 + "`description` = ?, "
                 + " location = ?, "
                 + "outcome = ?, "
@@ -82,7 +82,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
         return jdbcTemplate.update(sql,
                 outing.getName(),
-                outing.getOutingType(),
+                outing.getType().toString(),
                 outing.getDescription(),
                 outing.getLocation(),
                 outing.getOutcome(),

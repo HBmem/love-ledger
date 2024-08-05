@@ -86,7 +86,7 @@ create table communication (
 create table outing (
 	outing_id int primary key auto_increment,
     `name` varchar(100) not null,
-    outing_type varchar(30) not null,
+    `type` varchar(30) not null,
     `description` text,
     location varchar(300),
     outcome text,
@@ -193,8 +193,10 @@ begin
         (2, '2024-05-05', 'TEXT', 'Talked about ideas for a date', 5, 1),
         (3, '2024-05-10', 'PHONE_CALL', 'Talked about their parent\'s resent illness', 3, 1);
         
-	insert into outing(outing_id, `name`, outing_type, `description`, location, outcome, start_time, end_time, relationship_id) values
-		(1, 'Feb 1st Park Date', 'DATE', 'Went to the park with my date. We talked for a while then took a walk together.', 'Overton Park', 'The date was fun', '2024-02-01 03:00:00', '2024-02-01 04:00:00', 1);
+	insert into outing(outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id) values
+		(1, 'Feb 1st Park Date', 'DATE', 'Went to the park with my date. We talked for a while then took a walk together.', 'Overton Park', 'The date was fun', '2024-02-01 03:00:00', '2024-02-01 04:00:00', 1),
+        (2, 'Feb 5th Car Date', 'DATE', 'Drove to our favourite spot and made out.', 'Overton Park', 'They\'re a great kisser :)', '2024-05-01 03:00:00', '2024-05-01 03:30:00', 1),
+        (3, 'Michigan Vacation', 'VACATION', 'Traveled to Michigan to see the sights.', 'Michigan', 'It was awful they cheated on me :(', '2024-04-11 03:00:00', '2024-04-21 03:30:00', 2);
 	
     insert into relationship_milestone(relationship_id, milestone_id, date_awarded) values
 		(1, 1, '2024-03-11');

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class Outing {
     private int outingId;
     private String name;
-    private OutingType outingType;
+    private OutingType type;
     private String description;
     private String location;
     private String outcome;
@@ -30,12 +30,12 @@ public class Outing {
         this.name = name;
     }
 
-    public OutingType getOutingType() {
-        return outingType;
+    public OutingType getType() {
+        return type;
     }
 
-    public void setOutingType(OutingType outingType) {
-        this.outingType = outingType;
+    public void setType(OutingType outingType) {
+        this.type = outingType;
     }
 
     public String getDescription() {
