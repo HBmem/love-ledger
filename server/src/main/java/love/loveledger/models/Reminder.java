@@ -8,6 +8,7 @@ public class Reminder {
     private String description;
     private LocalDate date;
     private int userId;
+    private int relationshipId;
     private int notableDayId;
 
     public int getReminderId() {
@@ -48,6 +49,14 @@ public class Reminder {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getRelationshipId() {
+        return relationshipId;
+    }
+
+    public void setRelationshipId(int relationshipId) {
+        this.relationshipId = relationshipId;
     }
 
     public int getNotableDayId() {

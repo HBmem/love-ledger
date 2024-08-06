@@ -17,6 +17,7 @@ public class ReminderMapper implements RowMapper<Reminder> {
         reminder.setDescription(resultSet.getString("description"));
         reminder.setDate(resultSet.getDate("date").toLocalDate());
         reminder.setUserId(resultSet.getInt("user_id"));
+        reminder.setRelationshipId(resultSet.getInt("relationship_id"));
         reminder.setNotableDayId(resultSet.getInt("notable_day_id"));
 
         return reminder;

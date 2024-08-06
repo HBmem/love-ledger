@@ -127,10 +127,14 @@ create table reminder (
     `description` text,
     `date` date not null,
     user_id int not null,
+    relationship_id int,
     notable_day_id int,
     constraint fk_reminder_user_id
 		foreign key (user_id)
         references `user`(user_id),
+	constraint fk_reminder_relationship_id
+		foreign key (relationship_id)
+        references relationship(relationship_id),
 	constraint fk_reminder_notable_day_id
 		foreign key (notable_day_id)
         references notable_day(notable_day_id)
@@ -207,8 +211,10 @@ begin
         (2, 'Thanksgiving 2024', 'Time to meet the family.', 28, 11, 2024),
         (3, 'Christmas Day', 'Winter Time! it\'s time to settle with the family.', 25, 12, -1);
         
-    insert into reminder(reminder_id, `name`, `date`, `description`, user_id, notable_day_id) values
-		(1, 'Birthday', '2024-01-04', 'I\'s your love interests birthday today.', 1, null);
+    insert into reminder(reminder_id, `name`, `date`, `description`, user_id, relationship_id, notable_day_id) values
+		(1, 'Birthday', '2024-01-04', 'It\'s your birthday today.', 1, null, null),
+        (2, 'Birthday', '2024-05-04', 'I5\'s your birthday today.', 2, 2, null),
+        (3, 'Valentines Day', '2024-02-14', 'First Valentines Day!', 1, 1, 1);
         
 end //
 delimiter ;
