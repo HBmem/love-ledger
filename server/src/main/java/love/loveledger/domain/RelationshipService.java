@@ -32,7 +32,7 @@ public class RelationshipService {
         }
 
         if (relationship.getRelationshipId() != 0) {
-            result.addMessage("relationshipId cannot be set fro 'add' operation", ResultType.INVALID);
+            result.addMessage("relationshipId cannot be set for 'add' operation", ResultType.INVALID);
             return result;
         }
 
@@ -61,8 +61,8 @@ public class RelationshipService {
         return result;
     }
 
-    public boolean deleteById(int agentId) {
-        return relationshipRepository.delete(agentId);
+    public boolean deleteById(int relationshipId) {
+        return relationshipRepository.delete(relationshipId);
     }
 
     private Result<Relationship> validate(Relationship relationship) {

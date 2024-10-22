@@ -21,12 +21,12 @@ public class CommunicationJdbcTemplateRepository implements CommunicationReposit
     }
 
     @Override
-    public List<Communication> findAllCommunicationByRelationshipId(int userId) {
+    public List<Communication> findAllCommunicationByRelationshipId(int relationshipId) {
         final String sql = "select communication_id, `date`, `type`, `description`, mood_score, relationship_id "
                 + "from communication "
                 + "where relationship_id = ?;";
 
-        return jdbcTemplate.query(sql, new CommunicationMapper(), userId);
+        return jdbcTemplate.query(sql, new CommunicationMapper(), relationshipId);
     }
 
     @Override

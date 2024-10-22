@@ -33,6 +33,7 @@ class RelationshipServiceTest {
         assertEquals(ResultType.SUCCESS, actual.getType());
         assertEquals(mockOut, actual.getPayload());
     }
+
     @Test
     void shouldNotAddWhenInvalid() {
         Relationship relationship = makeRelationship();
