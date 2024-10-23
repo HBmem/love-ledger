@@ -39,6 +39,20 @@ create table milestone (
     `description` text not null
 );
 
+create table user_milestone (
+	user_id int not null,
+    milestone_id int not null,
+    date_received date not null,
+    constraint pk_user_milestone
+		primary key (user_id, milestone_id),
+	constraint fk_user_milestone_user_id
+		foreign key (user_id)
+        references `user` (user_id),
+	constraint fk_user_milestone_milestone_id
+		foreign key (milestone_id)
+        references milestone (milstone_id)
+);
+
 create table love_interest (
 	love_interest_id int primary key auto_increment,
     nickname varchar(50),
