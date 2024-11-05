@@ -73,6 +73,14 @@ public class RelationshipService {
             return result;
         }
 
+        if (relationship.getRelationshipStatus() == null) {
+            result.addMessage("relationship status cannot be null", ResultType.INVALID);
+        }
+
+        if (relationship.getImportanceLevel() < 1 || relationship.getImportanceLevel() > 5) {
+            result.addMessage("importance level must between 1 and 5", ResultType.INVALID);
+        }
+
         if (relationship.getStartDate() == null) {
             result.addMessage("start date is required", ResultType.INVALID);
             return result;

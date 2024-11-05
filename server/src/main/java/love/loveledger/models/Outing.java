@@ -1,5 +1,6 @@
 package love.loveledger.models;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -10,6 +11,8 @@ public class Outing {
     private String description;
     private String location;
     private String outcome;
+    private BigDecimal cost;
+    private int rating;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int relationshipId;
@@ -60,6 +63,22 @@ public class Outing {
 
     public void setOutcome(String outcome) {
         this.outcome = outcome;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public LocalDateTime getStartTime() {

@@ -8,6 +8,7 @@ public class LoveInterest {
     private String firstName;
     private String lastName;
     private Gender gender;
+    private String profileImageUrl;
     private LocalDate birthday;
     private String[] hobbies;
     private String[] likes;
@@ -52,6 +53,14 @@ public class LoveInterest {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public LocalDate getBirthday() {

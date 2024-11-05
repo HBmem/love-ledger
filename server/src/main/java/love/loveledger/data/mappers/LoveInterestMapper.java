@@ -17,7 +17,10 @@ public class LoveInterestMapper implements RowMapper<LoveInterest> {
         loveInterest.setFirstName(resultSet.getString("fname"));
         loveInterest.setLastName(resultSet.getString("lname"));
         loveInterest.setGender(Gender.valueOf(resultSet.getString("gender")));
-        loveInterest.setBirthday(resultSet.getDate("birthday").toLocalDate());
+        loveInterest.setProfileImageUrl(resultSet.getString("profile_image_url"));
+        if (resultSet.getDate("birthday") != null) {
+            loveInterest.setBirthday(resultSet.getDate("birthday").toLocalDate());
+        }
         loveInterest.setHobbies(resultSet.getString("hobbies"));
         loveInterest.setLikes(resultSet.getString("likes"));
         loveInterest.setDislikes(resultSet.getString("dislikes"));

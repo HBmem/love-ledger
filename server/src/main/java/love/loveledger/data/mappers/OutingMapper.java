@@ -18,6 +18,8 @@ public class OutingMapper implements RowMapper<Outing> {
         outing.setDescription(resultSet.getString("description"));
         outing.setLocation(resultSet.getString("location"));
         outing.setOutcome(resultSet.getString("outcome"));
+        outing.setCost(resultSet.getBigDecimal("cost"));
+        outing.setRating(resultSet.getInt("rating"));
         outing.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
         outing.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
         outing.setRelationshipId(resultSet.getInt("relationship_id"));

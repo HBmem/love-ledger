@@ -2,6 +2,7 @@ package love.loveledger.domain;
 
 import love.loveledger.data.MilestoneRepository;
 import love.loveledger.models.Milestone;
+import love.loveledger.models.MilestoneType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,8 +70,14 @@ class MilestoneServiceTest {
         actual = service.add(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
 
-        //Should not add when description is null
+        // Should not add when description is null
         milestone.setDescription(null);
+        actual = service.add(milestone);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when milestone type is null
+        milestone = makeMilestone();
+        milestone.setType(null);
         actual = service.add(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
     }
@@ -108,7 +115,7 @@ class MilestoneServiceTest {
 
         // Should not add when name is null
         milestone.setName(null);
-        actual = service.add(milestone);
+        actual = service.update(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
 
         // Should not add when name is not unique
@@ -116,18 +123,24 @@ class MilestoneServiceTest {
 
         when(milestoneRepository.findAllMilestone()).thenReturn(makeMilestoneList());
 
-        actual = service.add(milestone);
+        actual = service.update(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
 
         // Should not add when description is empty
         milestone = makeMilestone();
         milestone.setDescription("");
-        actual = service.add(milestone);
+        actual = service.update(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
 
         //Should not add when description is null
         milestone.setDescription(null);
-        actual = service.add(milestone);
+        actual = service.update(milestone);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when milestone type is null
+        milestone = makeMilestone();
+        milestone.setType(null);
+        actual = service.update(milestone);
         assertEquals(ResultType.INVALID, actual.getType());
     }
 
@@ -136,6 +149,7 @@ class MilestoneServiceTest {
 
         milestone.setName("First Christmas");
         milestone.setDescription("We celebrated our first christmas together!");
+        milestone.setType(MilestoneType.RELATIONSHIP);
 
         return milestone;
     }
@@ -147,12 +161,14 @@ class MilestoneServiceTest {
 
         milestone1.setName("First Christmas");
         milestone1.setDescription("We celebrated our first christmas together!");
+        milestone1.setType(MilestoneType.RELATIONSHIP);
         milestones.add(milestone1);
 
         Milestone milestone2 = new Milestone();
 
         milestone2.setName("First Valentine");
         milestone2.setDescription("We celebrated our first valentine!");
+        milestone2.setType(MilestoneType.RELATIONSHIP);
         milestones.add(milestone2);
 
         return milestones;

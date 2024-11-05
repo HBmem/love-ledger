@@ -77,6 +77,10 @@ public class MilestoneService {
             return result;
         }
 
+        if (milestone.getType() == null) {
+            result.addMessage("milestone type cannot be null", ResultType.INVALID);
+        }
+
         List<Milestone> milestones = milestoneRepository.findAllMilestone();
         if (milestones.stream().anyMatch(m -> m.getName().equalsIgnoreCase(milestone.getName()))) {
             result.addMessage("name must be unique", ResultType.INVALID);

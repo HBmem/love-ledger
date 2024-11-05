@@ -1,6 +1,7 @@
 package love.loveledger.data.mappers;
 
 import love.loveledger.models.Milestone;
+import love.loveledger.models.MilestoneType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ public class MilestoneMapper implements RowMapper<Milestone> {
         milestone.setMilestoneId(resultSet.getInt("milestone_id"));
         milestone.setName(resultSet.getString("name"));
         milestone.setDescription(resultSet.getString("description"));
+        milestone.setType(MilestoneType.valueOf(resultSet.getString("type")));
 
         return milestone;
     }

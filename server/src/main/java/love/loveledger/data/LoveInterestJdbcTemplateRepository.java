@@ -21,7 +21,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
 
     @Override
     public List<LoveInterest> findAllLoveInterestByUserId(int userId) {
-        final String sql = "select love_interest_id, nickname, fname, lname, gender, birthday, hobbies, likes, dislikes, user_id "
+        final String sql = "select love_interest_id, nickname, fname, lname, gender, profile_image_url, birthday, hobbies, likes, dislikes, user_id "
                 + "from love_interest "
                 + "where user_id = ?;";
 
@@ -30,7 +30,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
 
     @Override
     public LoveInterest findLoveInterestById(int loveInterestId) {
-        final String sql = "select love_interest_id, nickname, fname, lname, gender, birthday, hobbies, likes, dislikes, user_id "
+        final String sql = "select love_interest_id, nickname, fname, lname, gender, profile_image_url, birthday, hobbies, likes, dislikes, user_id "
                 + "from love_interest "
                 + "where love_interest_id = ?;";
 
@@ -41,8 +41,8 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
 
     @Override
     public LoveInterest add(LoveInterest loveInterest) {
-        final String sql = "insert into love_interest(nickname, fname, lname, gender, birthday, hobbies, likes, dislikes, user_id) "
-                + "values (?,?,?,?,?,?,?,?,?);";
+        final String sql = "insert into love_interest(nickname, fname, lname, gender, profile_image_url, birthday, hobbies, likes, dislikes, user_id) "
+                + "values (?,?,?,?,?,?,?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -51,11 +51,12 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
             ps.setString(2, loveInterest.getFirstName());
             ps.setString(3, loveInterest.getLastName());
             ps.setString(4, loveInterest.getGender().toString());
-            ps.setDate(5, Date.valueOf(loveInterest.getBirthday()));
-            ps.setString(6, loveInterest.getHobbiesString());
-            ps.setString(7, loveInterest.getLikesString());
-            ps.setString(8, loveInterest.getDislikesString());
-            ps.setInt(9, loveInterest.getUserId());
+            ps.setString(5, loveInterest.getProfileImageUrl());
+            ps.setDate(6, Date.valueOf(loveInterest.getBirthday()));
+            ps.setString(7, loveInterest.getHobbiesString());
+            ps.setString(8, loveInterest.getLikesString());
+            ps.setString(9, loveInterest.getDislikesString());
+            ps.setInt(10, loveInterest.getUserId());
             return ps;
         }, keyHolder);
 
@@ -74,6 +75,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
                 + "fname = ?, "
                 + "lname = ?, "
                 + "gender = ?, "
+                + "profile_image_url = ?, "
                 + "birthday = ?, "
                 + "hobbies = ?, "
                 + "likes = ?, "
@@ -86,6 +88,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
                 loveInterest.getFirstName(),
                 loveInterest.getLastName(),
                 loveInterest.getGender().toString(),
+                loveInterest.getProfileImageUrl(),
                 loveInterest.getBirthday(),
                 loveInterest.getHobbiesString(),
                 loveInterest.getLikesString(),

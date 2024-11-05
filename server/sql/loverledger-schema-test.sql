@@ -5,14 +5,17 @@ use love_ledger_test;
 create table `user` (
 	user_id int primary key auto_increment,
     username varchar(50) not null unique,
-    password_hash varchar(2048) not null,
+    password_hash varchar(50) not null,
     email varchar(250) not null unique,
-    disabled boolean not null default(0),
+    profile_image_url varchar(255),
+    is_disabled boolean not null default(0),
+    is_verified boolean not null default(0),
     
     -- personal details
     fname varchar(100),
     lname varchar(100),
-    gender varchar(50)
+    gender varchar(50),
+    birthday date
 );
 
 create table `role` (
@@ -36,7 +39,8 @@ create table user_role (
 create table milestone (
 	milestone_id int primary key auto_increment,
     `name` varchar(50) not null,
-    `description` text not null
+    `description` text not null,
+    `type` varchar(50) not null
 );
 
 create table user_milestone (
@@ -50,7 +54,7 @@ create table user_milestone (
         references `user` (user_id),
 	constraint fk_user_milestone_milestone_id
 		foreign key (milestone_id)
-        references milestone (milstone_id)
+        references milestone (milestone_id)
 );
 
 create table love_interest (
@@ -59,6 +63,7 @@ create table love_interest (
     fname varchar(100),
     lname varchar(100),
     gender varchar(25),
+    profile_image_url varchar(255),
     birthday date,
     hobbies text,
     likes text,
@@ -72,9 +77,10 @@ create table love_interest (
 create table relationship (
 	relationship_id int primary key auto_increment,
     start_date date not null,
-    end_date date null,
+    end_date date,
+    relationship_status varchar(50) not null,
+    importance_level int not null check(importance_level >= 1 AND importance_level <= 5),
     is_official boolean not null default(0),
-    labels varchar(30) not null,
     user_id int not null,
     love_interest_id int not null,
     constraint fk_relationship_user_id
@@ -104,6 +110,8 @@ create table outing (
     `description` text,
     location varchar(300),
     outcome text,
+    cost decimal(10,2),
+    rating int check(rating >= 1 AND rating <= 5),
     start_time datetime not null,
     end_time datetime not null,
     relationship_id int not null,
@@ -180,9 +188,9 @@ begin
     delete from `user`;
     alter table `user` auto_increment = 1;
     
-    insert into `user`(user_id, username, password_hash, email, disabled, fname, lname) values
-		(1, 'JohnD', 'TEST', 'john.doe@email.com', true, 'John', 'Doe'),
-        (2, 'JaneD', 'TEST', 'jane.doe@email.com', true, 'Jane', 'Doe');
+    insert into `user`(user_id, username, password_hash, email, profile_image_url, is_disabled, is_verified, fname, lname, gender, birthday) values
+		(1, 'JohnD', 'TEST', 'john.doe@email.com', '', false, true, 'John', 'Doe', 'MALE', '1997-01-04'),
+        (2, 'JaneD', 'TEST', 'jane.doe@email.com', '', false, false, 'Jane', 'Doe', 'FEMALE', '1992-02-09');
 	
     insert into `role`(role_id, `name`) values
 		(1, 'ADMIN'),
@@ -192,30 +200,33 @@ begin
 		(1, 2),
         (2, 1);
 	
-    insert into milestone(milestone_id, `name`, `description`) values
-		(1, 'New Relationship', 'The start of something new hopefully this one goes somewhere.'),
-        (2, '1 Month', 'We lasted a month! hopefully we keep going.'),
-        (3, 'First Valentine', 'We celebrated our first valentine!');
+    insert into milestone(milestone_id, `name`, `description`, `type`) values
+		(1, 'New Relationship', 'The start of something new hopefully this one goes somewhere.', 'RELATIONSHIP'),
+        (2, '1 Month', 'We lasted a month! hopefully we keep going.', 'RELATIONSHIP'),
+        (3, 'First Valentine', 'We celebrated our first valentine!', 'RELATIONSHIP');
 	
-    insert into love_interest(love_interest_id, nickname, fname, lname, gender, birthday, hobbies, likes, dislikes, user_id) values
-		(1, 'Princess', 'Fiona', 'Ogre', 'FEMALE', '1996-04-28', 'fighting;singing;dancing', 'color green;birds;fights', 'short people;color pink', 1),
-        (2, 'Hasanabi', 'Hasan', 'Piker', 'MALE', '1986-09-11', 'talking;arguing;basketball', 'politics', 'liberals;conservatives', 2),
-        (3, null, 'Ash', 'Kechum', 'MALE', '2000-04-13', 'animals; animal abuse', 'pokemon', 'team rocket', 2);
+--     insert into user_milestone(user_id, milestone_id, date_received) values
+-- 		();
+    
+    insert into love_interest(love_interest_id, nickname, fname, lname, gender, profile_image_url, birthday, hobbies, likes, dislikes, user_id) values
+		(1, 'Princess', 'Fiona', 'Ogre', 'FEMALE', 'IMG/URL', '1996-04-28', 'fighting;singing;dancing', 'color green;birds;fights', 'short people;color pink', 1),
+        (2, 'Hasanabi', 'Hasan', 'Piker', 'MALE', 'IMG/URL', '1986-09-11', 'talking;arguing;basketball', 'politics', 'liberals;conservatives', 2),
+        (3, null, 'Ash', 'Kechum', 'MALE', 'IMG/URL', '2000-04-13', 'animals; animal abuse', 'pokemon', 'team rocket', 2);
         
-	insert into relationship(relationship_id, start_date, end_date, is_official, labels, user_id, love_interest_id) values
-		(1, '2024-05-01', null, true, '', 2, 2),
-        (2, '2023-11-02', '2024-04-29', true, '', 2, 2),
-        (3, '2023-12-25', null, true, '', 1, 1);
+	insert into relationship(relationship_id, start_date, end_date, relationship_status, importance_level, is_official, user_id, love_interest_id) values
+		(1, '2024-05-01', null, 'DATING', 3, true, 2, 2),
+        (2, '2023-11-02', '2024-04-29', 'TALKING', 2, true, 2, 2),
+        (3, '2023-12-25', null, 'DATING', 4, true, 1, 1);
 
 	insert into communication(communication_id, `date`, `type`, `description`, mood_score, relationship_id) values
 		(1, '2024-06-10', 'TEXT', 'Talked about fighting', 4, 1),
         (2, '2024-05-05', 'TEXT', 'Talked about ideas for a date', 5, 1),
         (3, '2024-05-10', 'PHONE_CALL', 'Talked about their parent\'s resent illness', 3, 1);
         
-	insert into outing(outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id) values
-		(1, 'Feb 1st Park Date', 'DATE', 'Went to the park with my date. We talked for a while then took a walk together.', 'Overton Park', 'The date was fun', '2024-02-01 03:00:00', '2024-02-01 04:00:00', 1),
-        (2, 'Feb 5th Car Date', 'DATE', 'Drove to our favourite spot and made out.', 'Overton Park', 'They\'re a great kisser :)', '2024-05-01 03:00:00', '2024-05-01 03:30:00', 1),
-        (3, 'Michigan Vacation', 'VACATION', 'Traveled to Michigan to see the sights.', 'Michigan', 'It was awful they cheated on me :(', '2024-04-11 03:00:00', '2024-04-21 03:30:00', 2);
+	insert into outing(outing_id, `name`, `type`, `description`, location, outcome, cost, rating, start_time, end_time, relationship_id) values
+		(1, 'Feb 1st Park Date', 'DATE', 'Went to the park with my date. We talked for a while then took a walk together.', 'Overton Park', 'The date was fun', 250.00, 4,'2024-02-01 03:00:00', '2024-02-01 04:00:00', 1),
+        (2, 'Feb 5th Car Date', 'DATE', 'Drove to our favourite spot and made out.', 'Overton Park', 'They\'re a great kisser :)', 100.00, 5,'2024-05-01 03:00:00', '2024-05-01 03:30:00', 1),
+        (3, 'Michigan Vacation', 'VACATION', 'Traveled to Michigan to see the sights.', 'Michigan', 'It was awful they cheated on me :(', 5.50, 1 ,'2024-04-11 03:00:00', '2024-04-21 03:30:00', 2);
 	
     insert into relationship_milestone(relationship_id, milestone_id, date_awarded) values
 		(1, 1, '2024-03-11');

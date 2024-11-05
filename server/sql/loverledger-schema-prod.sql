@@ -5,14 +5,17 @@ use love_ledger;
 create table `user` (
 	user_id int primary key auto_increment,
     username varchar(50) not null unique,
-    password_hash varchar(2048) not null,
+    password_hash varchar(50) not null,
     email varchar(250) not null unique,
-    disabled boolean not null default(0),
+    profile_image_url varchar(255),
+    is_disabled boolean not null default(0),
+    is_verified boolean not null default(0),
     
     -- personal details
     fname varchar(100),
     lname varchar(100),
-    gender varchar(50)
+    gender varchar(50),
+    birthday date
 );
 
 create table `role` (
@@ -36,7 +39,22 @@ create table user_role (
 create table milestone (
 	milestone_id int primary key auto_increment,
     `name` varchar(50) not null,
-    `description` text not null
+    `description` text not null,
+    `type` varchar(50) not null
+);
+
+create table user_milestone (
+	user_id int not null,
+    milestone_id int not null,
+    date_received date not null,
+    constraint pk_user_milestone
+		primary key (user_id, milestone_id),
+	constraint fk_user_milestone_user_id
+		foreign key (user_id)
+        references `user` (user_id),
+	constraint fk_user_milestone_milestone_id
+		foreign key (milestone_id)
+        references milestone (milestone_id)
 );
 
 create table love_interest (
@@ -45,6 +63,7 @@ create table love_interest (
     fname varchar(100),
     lname varchar(100),
     gender varchar(25),
+    profile_image_url varchar(255),
     birthday date,
     hobbies text,
     likes text,
@@ -58,9 +77,10 @@ create table love_interest (
 create table relationship (
 	relationship_id int primary key auto_increment,
     start_date date not null,
-    end_date date null,
+    end_date date,
+    relationship_status varchar(50) not null,
+    importance_level int not null check(importance_level >= 1 AND importance_level <= 5),
     is_official boolean not null default(0),
-    labels varchar(30) not null,
     user_id int not null,
     love_interest_id int not null,
     constraint fk_relationship_user_id
@@ -86,10 +106,12 @@ create table communication (
 create table outing (
 	outing_id int primary key auto_increment,
     `name` varchar(100) not null,
-    outing_type varchar(30) not null,
+    `type` varchar(30) not null,
     `description` text,
     location varchar(300),
     outcome text,
+    cost decimal(10,2),
+    rating int check(rating >= 1 AND rating <= 5),
     start_time datetime not null,
     end_time datetime not null,
     relationship_id int not null,
@@ -117,7 +139,8 @@ create table notable_day (
     `name` varchar(100) not null,
     `description` text,
     `day` int not null,
-    `month` int not null
+    `month` int not null,
+    `year` int 
 );
 
 create table reminder (
@@ -126,10 +149,14 @@ create table reminder (
     `description` text,
     `date` date not null,
     user_id int not null,
+    relationship_id int,
     notable_day_id int,
     constraint fk_reminder_user_id
 		foreign key (user_id)
         references `user`(user_id),
+	constraint fk_reminder_relationship_id
+		foreign key (relationship_id)
+        references relationship(relationship_id),
 	constraint fk_reminder_notable_day_id
 		foreign key (notable_day_id)
         references notable_day(notable_day_id)

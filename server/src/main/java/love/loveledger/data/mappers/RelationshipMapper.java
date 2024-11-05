@@ -1,6 +1,7 @@
 package love.loveledger.data.mappers;
 
 import love.loveledger.models.Relationship;
+import love.loveledger.models.RelationshipStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -16,8 +17,9 @@ public class RelationshipMapper implements RowMapper<Relationship> {
         if (resultSet.getDate("end_date") != null) {
             relationship.setEndDate(resultSet.getDate("end_date").toLocalDate());
         }
+        relationship.setRelationshipStatus(RelationshipStatus.valueOf(resultSet.getString("relationship_status")));
+        relationship.setImportanceLevel(resultSet.getInt("importance_level"));
         relationship.setOfficial(resultSet.getBoolean("is_official"));
-        relationship.setLabels(resultSet.getString("labels"));
         relationship.setUserId(resultSet.getInt("user_id"));
         relationship.setLoveInterestId(resultSet.getInt("love_interest_id"));
 

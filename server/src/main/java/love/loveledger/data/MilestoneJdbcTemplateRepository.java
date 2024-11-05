@@ -20,7 +20,7 @@ public class MilestoneJdbcTemplateRepository implements MilestoneRepository {
 
     @Override
     public List<Milestone> findAllMilestone() {
-        final String sql = "select milestone_id, `name`, `description` "
+        final String sql = "select milestone_id, `name`, `description`, `type` "
                 + "from milestone;";
 
         return jdbcTemplate.query(sql, new MilestoneMapper());
@@ -28,7 +28,7 @@ public class MilestoneJdbcTemplateRepository implements MilestoneRepository {
 
     @Override
     public Milestone findMilestoneById(int milestoneId) {
-        final String sql = "select milestone_id, `name`, `description` "
+        final String sql = "select milestone_id, `name`, `description`, `type` "
                 + "from milestone "
                 + "where milestone_id = ?;";
 
@@ -39,14 +39,15 @@ public class MilestoneJdbcTemplateRepository implements MilestoneRepository {
 
     @Override
     public Milestone add(Milestone milestone) {
-        final String sql = "insert into milestone(`name`, `description`) "
-                + "values (?,?);";
+        final String sql = "insert into milestone(`name`, `description`, `type`) "
+                + "values (?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, milestone.getName());
             ps.setString(2, milestone.getDescription());
+            ps.setString(3, milestone.getType().toString());
             return ps;
         }, keyHolder);
 
@@ -62,11 +63,13 @@ public class MilestoneJdbcTemplateRepository implements MilestoneRepository {
     public boolean update(Milestone milestone) {
         final String sql = "update milestone set "
                 + "`name` = ?, "
-                + "`description` = ? "
+                + "`description` = ?, "
+                + "`type` = ? "
                 + "where milestone_id = ?;";
         return jdbcTemplate.update(sql,
                 milestone.getName(),
                 milestone.getDescription(),
+                milestone.getType().toString(),
                 milestone.getMilestoneId()) > 0;
     }
 

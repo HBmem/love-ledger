@@ -1,6 +1,7 @@
 package love.loveledger.data;
 
 import love.loveledger.models.Relationship;
+import love.loveledger.models.RelationshipStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,9 @@ class RelationshipJdbcTemplateRepositoryTest {
 
         assertEquals(LocalDate.of(2024, 5, 1), relationship.getStartDate());
         assertNull(relationship.getEndDate());
+        assertEquals( RelationshipStatus.DATING, relationship.getRelationshipStatus());
+        assertEquals(3, relationship.getImportanceLevel());
         assertTrue(relationship.isOfficial());
-        assertEquals("", relationship.getLabelsString());
         assertEquals(2, relationship.getUserId());
         assertEquals(2, relationship.getLoveInterestId());
         assertEquals(1, relationship.getRelationshipId());
@@ -65,8 +67,9 @@ class RelationshipJdbcTemplateRepositoryTest {
         assertEquals(4, actual.getRelationshipId());
         assertEquals(LocalDate.of(2023,1,12), actual.getStartDate());
         assertEquals(LocalDate.of(2023,11,27), actual.getEndDate());
+        assertEquals( RelationshipStatus.ENGAGED, actual.getRelationshipStatus());
+        assertEquals(4, actual.getImportanceLevel());
         assertFalse(actual.isOfficial());
-        assertEquals("", actual.getLabelsString());
         assertEquals(1, actual.getUserId());
         assertEquals(1, actual.getLoveInterestId());
     }
@@ -76,7 +79,7 @@ class RelationshipJdbcTemplateRepositoryTest {
         Relationship relationship = repository.findRelationshipById(2);
         assertNotNull(relationship);
 
-        relationship.setLabels("Marriage");
+        relationship.setRelationshipStatus(RelationshipStatus.MARRIED);
         relationship.setStartDate(LocalDate.of(2022,8,13));
 
         boolean actual = repository.update(relationship);
@@ -94,8 +97,9 @@ class RelationshipJdbcTemplateRepositoryTest {
 
         relationship.setStartDate(LocalDate.of(2023,1,12));
         relationship.setEndDate(LocalDate.of(2023,11,27));
+        relationship.setRelationshipStatus(RelationshipStatus.ENGAGED);
+        relationship.setImportanceLevel(4);
         relationship.setOfficial(false);
-        relationship.setLabels("");
         relationship.setUserId(1);
         relationship.setLoveInterestId(1);
 

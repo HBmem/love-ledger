@@ -1,5 +1,6 @@
 package love.loveledger.data.mappers;
 
+import love.loveledger.models.Gender;
 import love.loveledger.models.User;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -12,9 +13,18 @@ public class UserMapper implements RowMapper<User> {
         User user = new User();
         user.setUserId(resultSet.getInt("user_id"));
         user.setUsername(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password_hash"));
+        user.setPasswordHash(resultSet.getString("password_hash"));
         user.setEmail(resultSet.getString("email"));
-        user.setDisabled(resultSet.getBoolean("disabled"));
+        user.setProfileImageURL(resultSet.getString("profile_image_url"));
+        user.setDisabled(resultSet.getBoolean("is_disabled"));
+        user.setVerified(resultSet.getBoolean("is_verified"));
+        user.setFirstName(resultSet.getString("fname"));
+        user.setLastName(resultSet.getString("lname"));
+        user.setGender(Gender.valueOf(resultSet.getString("gender")));
+        if (resultSet.getDate("birthday") != null) {
+            user.setBirthday(resultSet.getDate("birthday").toLocalDate());
+        }
+
         return user;
     }
 }

@@ -48,6 +48,7 @@ class LoveInterestJdbcTemplateRepositoryTest {
         assertEquals("Fiona", loveInterest.getFirstName());
         assertEquals("Ogre", loveInterest.getLastName());
         assertEquals(Gender.FEMALE, loveInterest.getGender());
+        assertEquals("IMG/URL", loveInterest.getProfileImageUrl());
         assertEquals(LocalDate.of(1996, 4, 28), loveInterest.getBirthday());
         assertEquals("fighting;singing;dancing", loveInterest.getHobbiesString());
         assertEquals("color green;birds;fights", loveInterest.getLikesString());
@@ -70,6 +71,7 @@ class LoveInterestJdbcTemplateRepositoryTest {
         assertEquals("Donald", actual.getFirstName());
         assertEquals("Trump", actual.getLastName());
         assertEquals(Gender.MALE, actual.getGender());
+        assertEquals("IMG/URL", actual.getProfileImageUrl());
         assertEquals(LocalDate.of(1996, 6, 14), actual.getBirthday());
         assertEquals("lying;doing crimes;getting arrested", actual.getHobbiesString());
         assertEquals("lies;crimes;fascism", actual.getLikesString());
@@ -101,6 +103,7 @@ class LoveInterestJdbcTemplateRepositoryTest {
         loveInterest.setFirstName("Donald");
         loveInterest.setLastName("Trump");
         loveInterest.setGender(Gender.MALE);
+        loveInterest.setProfileImageUrl("IMG/URL");
         loveInterest.setBirthday(LocalDate.of(1996, 6, 14));
         loveInterest.setHobbies("lying;doing crimes;getting arrested");
         loveInterest.setLikes("lies;crimes;fascism");

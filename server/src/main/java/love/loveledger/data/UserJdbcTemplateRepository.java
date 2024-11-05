@@ -20,7 +20,7 @@ public class UserJdbcTemplateRepository {
     }
 
     @Transactional
-    public User findByUser(String username) {
+    public User findByUsername(String username) {
         final String sql = "select user_id, username, password_hash, disabled "
                 + "from user "
                 + "where username = ?;";
@@ -43,7 +43,7 @@ public class UserJdbcTemplateRepository {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
+            ps.setString(3, user.getPasswordHash());
             return ps;
         }, keyHolder);
 

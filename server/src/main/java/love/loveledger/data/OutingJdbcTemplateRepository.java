@@ -22,7 +22,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public List<Outing> findAllOutingsByRelationshipId(int relationshipId) {
-        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id "
+        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, cost, rating, start_time, end_time, relationship_id "
                 + "from outing "
                 + "where relationship_id = ?;";
 
@@ -31,7 +31,7 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public Outing findOutingById(int outingId) {
-        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id "
+        final String sql = "select outing_id, `name`, `type`, `description`, location, outcome, cost, rating, start_time, end_time, relationship_id "
                 + "from outing "
                 + "where outing_id = ?;";
 
@@ -42,8 +42,8 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
 
     @Override
     public Outing add(Outing outing) {
-        final String sql = "insert into outing(`name`, `type`, `description`, location, outcome, start_time, end_time, relationship_id) "
-                + "values (?,?,?,?,?,?,?,?);";
+        final String sql = "insert into outing(`name`, `type`, `description`, location, cost, rating, outcome, start_time, end_time, relationship_id) "
+                + "values (?,?,?,?,?,?,?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -52,10 +52,12 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
             ps.setString(2, outing.getType().toString());
             ps.setString(3, outing.getDescription());
             ps.setString(4, outing.getLocation());
-            ps.setString(5, outing.getOutcome());
-            ps.setTimestamp(6, Timestamp.valueOf(outing.getStartTime()));
-            ps.setTimestamp(7, Timestamp.valueOf(outing.getEndTime()));
-            ps.setInt(8, outing.getRelationshipId());
+            ps.setBigDecimal(5, outing.getCost());
+            ps.setInt(6, outing.getRating());
+            ps.setString(7, outing.getOutcome());
+            ps.setTimestamp(8, Timestamp.valueOf(outing.getStartTime()));
+            ps.setTimestamp(9, Timestamp.valueOf(outing.getEndTime()));
+            ps.setInt(10, outing.getRelationshipId());
             return ps;
         }, keyHolder);
 
@@ -73,8 +75,10 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
                 + "`name` = ?, "
                 + "`type` = ?, "
                 + "`description` = ?, "
-                + " location = ?, "
+                + "location = ?, "
                 + "outcome = ?, "
+                + "cost = ?, "
+                + "rating = ?, "
                 + "start_time = ?, "
                 + "end_time = ?, "
                 + "relationship_id = ? "
@@ -86,6 +90,8 @@ public class OutingJdbcTemplateRepository implements OutingRepository {
                 outing.getDescription(),
                 outing.getLocation(),
                 outing.getOutcome(),
+                outing.getCost(),
+                outing.getRating(),
                 outing.getStartTime(),
                 outing.getEndTime(),
                 outing.getRelationshipId(),

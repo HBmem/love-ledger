@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,6 +46,8 @@ class OutingJdbcTemplateRepositoryTest {
         assertEquals("Feb 1st Park Date", outing.getName());
         assertEquals(OutingType.DATE, outing.getType());
         assertEquals("Went to the park with my date. We talked for a while then took a walk together.", outing.getDescription());
+        assertEquals(BigDecimal.valueOf(250.0).setScale(2, RoundingMode.HALF_UP), outing.getCost());
+        assertEquals(4, outing.getRating());
         assertEquals("Overton Park", outing.getLocation());
         assertEquals("The date was fun", outing.getOutcome());
         assertEquals(LocalDateTime.of(2024, 1, 31, 21, 0, 0), outing.getStartTime());
@@ -66,6 +70,8 @@ class OutingJdbcTemplateRepositoryTest {
         assertEquals("Sneaky Link", actual.getName());
         assertEquals(OutingType.HOUSE_VISIT, actual.getType());
         assertEquals("Went to their house to link ;)", actual.getDescription());
+        assertEquals(BigDecimal.valueOf(100.5), actual.getCost());
+        assertEquals(5, actual.getRating());
         assertEquals("Crushes House", actual.getLocation());
         assertEquals("It was GREAT!!! they didn't seem happy tho", actual.getOutcome());
         assertEquals(LocalDateTime.of(2024, 2, 1, 3, 0, 0), actual.getStartTime());
@@ -98,6 +104,8 @@ class OutingJdbcTemplateRepositoryTest {
         outing.setType(OutingType.HOUSE_VISIT);
         outing.setDescription("Went to their house to link ;)");
         outing.setLocation("Crushes House");
+        outing.setCost(BigDecimal.valueOf(100.50));
+        outing.setRating(5);
         outing.setOutcome("It was GREAT!!! they didn't seem happy tho");
         outing.setStartTime(LocalDateTime.of(2024, 2, 1, 3, 0, 0));
         outing.setEndTime(LocalDateTime.of(2024, 2, 1, 3, 1, 0));

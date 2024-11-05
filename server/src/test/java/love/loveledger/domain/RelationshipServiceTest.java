@@ -2,6 +2,7 @@ package love.loveledger.domain;
 
 import love.loveledger.data.RelationshipRepository;
 import love.loveledger.models.Relationship;
+import love.loveledger.models.RelationshipStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,6 +60,22 @@ class RelationshipServiceTest {
         relationship.setEndDate(LocalDate.of(2023,1,1));
         actual = service.add(relationship);
         assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when relationship status is null
+        relationship = makeRelationship();
+        relationship.setRelationshipStatus(null);
+        actual = service.add(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when relationship status is not between 1 and 5
+        relationship = makeRelationship();
+        relationship.setImportanceLevel(0);
+        actual = service.add(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        relationship.setImportanceLevel(6);
+        actual = service.add(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
     }
 
     @Test
@@ -108,8 +125,9 @@ class RelationshipServiceTest {
 
         relationship.setStartDate(LocalDate.of(2023,1,12));
         relationship.setEndDate(LocalDate.of(2023,11,27));
+        relationship.setRelationshipStatus(RelationshipStatus.ENGAGED);
+        relationship.setImportanceLevel(4);
         relationship.setOfficial(false);
-        relationship.setLabels("");
         relationship.setUserId(1);
         relationship.setLoveInterestId(1);
 

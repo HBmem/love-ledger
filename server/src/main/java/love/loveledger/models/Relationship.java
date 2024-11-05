@@ -6,8 +6,9 @@ public class Relationship {
     private int relationshipId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private RelationshipStatus relationshipStatus;
+    private int importanceLevel;
     private boolean official;
-    private String[] labels;
     private int userId;
     private int loveInterestId;
 
@@ -35,28 +36,28 @@ public class Relationship {
         this.endDate = endDate;
     }
 
+    public RelationshipStatus getRelationshipStatus() {
+        return relationshipStatus;
+    }
+
+    public void setRelationshipStatus(RelationshipStatus relationshipStatus) {
+        this.relationshipStatus = relationshipStatus;
+    }
+
+    public int getImportanceLevel() {
+        return importanceLevel;
+    }
+
+    public void setImportanceLevel(int importanceLevel) {
+        this.importanceLevel = importanceLevel;
+    }
+
     public boolean isOfficial() {
         return official;
     }
 
     public void setOfficial(boolean official) {
         this.official = official;
-    }
-
-    public String[] getLabels() {
-        return labels;
-    }
-
-    public String getLabelsString() {
-        return String.join(";", labels);
-    }
-
-    public void setLabels(String labels) {
-        this.labels = labels.split(";");
-    }
-
-    public void setLabels(String[] labels) {
-        this.labels = labels;
     }
 
     public int getUserId() {

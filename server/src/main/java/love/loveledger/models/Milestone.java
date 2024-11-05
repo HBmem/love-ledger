@@ -6,6 +6,7 @@ public class Milestone {
     private int milestoneId;
     private String name;
     private String Description;
+    private MilestoneType type;
 
     public int getMilestoneId() {
         return milestoneId;
@@ -29,5 +30,13 @@ public class Milestone {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public MilestoneType getType() {
+        return type;
+    }
+
+    public void setType(MilestoneType type) {
+        this.type = type;
     }
 }

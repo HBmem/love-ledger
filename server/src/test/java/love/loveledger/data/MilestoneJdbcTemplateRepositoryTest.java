@@ -1,6 +1,7 @@
 package love.loveledger.data;
 
 import love.loveledger.models.Milestone;
+import love.loveledger.models.MilestoneType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ class MilestoneJdbcTemplateRepositoryTest {
         assertEquals(1, milestone.getMilestoneId());
         assertEquals("New Relationship", milestone.getName());
         assertEquals("The start of something new hopefully this one goes somewhere.", milestone.getDescription());
+        assertEquals(MilestoneType.RELATIONSHIP, milestone.getType());
     }
 
     @Test
@@ -52,6 +54,7 @@ class MilestoneJdbcTemplateRepositoryTest {
         assertEquals(4, actual.getMilestoneId());
         assertEquals("First Christmas", actual.getName());
         assertEquals("We celebrated our first christmas together!", actual.getDescription());
+        assertEquals(MilestoneType.RELATIONSHIP, actual.getType());
     }
 
     @Test
@@ -61,6 +64,7 @@ class MilestoneJdbcTemplateRepositoryTest {
 
         milestone.setName("TEST");
         milestone.setDescription("TEST DESCRIPTION!!");
+        milestone.setType(MilestoneType.USER);
 
         boolean actual = repository.update(milestone);
         assertTrue(actual);
@@ -77,6 +81,7 @@ class MilestoneJdbcTemplateRepositoryTest {
 
         milestone.setName("First Christmas");
         milestone.setDescription("We celebrated our first christmas together!");
+        milestone.setType(MilestoneType.RELATIONSHIP);
 
         return milestone;
     }
