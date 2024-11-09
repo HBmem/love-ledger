@@ -1,6 +1,10 @@
 package love.loveledger.domain;
 
+import love.loveledger.data.LoveInterestRepository;
 import love.loveledger.data.RelationshipRepository;
+import love.loveledger.data.UserRepository;
+import love.loveledger.models.AppUser;
+import love.loveledger.models.LoveInterest;
 import love.loveledger.models.Relationship;
 import love.loveledger.models.RelationshipStatus;
 import org.junit.jupiter.api.Test;
@@ -20,6 +24,10 @@ class RelationshipServiceTest {
 
     @MockBean
     RelationshipRepository relationshipRepository;
+    @MockBean
+    UserRepository userRepository;
+    @MockBean
+    LoveInterestRepository loveInterestRepository;
 
     @Test
     void shouldAdd() {
@@ -29,6 +37,8 @@ class RelationshipServiceTest {
         mockOut.setRelationshipId(4);
 
         when(relationshipRepository.add(relationship)).thenReturn(mockOut);
+        when(userRepository.findByUserId(relationship.getUserId())).thenReturn(makeUser());
+        when(loveInterestRepository.findLoveInterestById(relationship.getLoveInterestId())).thenReturn(makeLoveInterest());
 
         Result<Relationship> actual = service.add(relationship);
         assertEquals(ResultType.SUCCESS, actual.getType());
@@ -76,6 +86,24 @@ class RelationshipServiceTest {
         relationship.setImportanceLevel(6);
         actual = service.add(relationship);
         assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when user does not exist
+        relationship = makeRelationship();
+        relationship.setUserId(99);
+
+        when(userRepository.findByUserId(relationship.getUserId())).thenReturn(null);
+
+        actual = service.add(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when love interest does not exist
+        relationship = makeRelationship();
+        relationship.setRelationshipId(99);
+
+        when(userRepository.findByUserId(relationship.getLoveInterestId())).thenReturn(null);
+
+        actual = service.add(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
     }
 
     @Test
@@ -84,6 +112,9 @@ class RelationshipServiceTest {
         relationship.setRelationshipId(4);
 
         when(relationshipRepository.update(relationship)).thenReturn(true);
+        when(userRepository.findByUserId(relationship.getUserId())).thenReturn(makeUser());
+        when(loveInterestRepository.findLoveInterestById(relationship.getLoveInterestId())).thenReturn(makeLoveInterest());
+
         Result<Relationship> actual = service.update(relationship);
         assertEquals(ResultType.SUCCESS, actual.getType());
     }
@@ -94,6 +125,9 @@ class RelationshipServiceTest {
         relationship.setRelationshipId(99);
 
         when(relationshipRepository.update(relationship)).thenReturn(false);
+        when(userRepository.findByUserId(relationship.getUserId())).thenReturn(makeUser());
+        when(loveInterestRepository.findLoveInterestById(relationship.getLoveInterestId())).thenReturn(makeLoveInterest());
+
         Result<Relationship> actual = service.update(relationship);
         assertEquals(ResultType.NOT_FOUND, actual.getType());
     }
@@ -118,6 +152,40 @@ class RelationshipServiceTest {
         relationship.setEndDate(LocalDate.of(2023,1,1));
         actual = service.update(relationship);
         assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not update when relationship status is null
+        relationship = makeRelationship();
+        relationship.setRelationshipStatus(null);
+        actual = service.update(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not update when relationship status is not between 1 and 5
+        relationship = makeRelationship();
+        relationship.setImportanceLevel(0);
+        actual = service.update(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        relationship.setImportanceLevel(6);
+        actual = service.update(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not update when user does not exist
+        relationship = makeRelationship();
+        relationship.setUserId(99);
+
+        when(userRepository.findByUserId(relationship.getUserId())).thenReturn(null);
+
+        actual = service.update(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not update when love interest does not exist
+        relationship = makeRelationship();
+        relationship.setRelationshipId(99);
+
+        when(userRepository.findByUserId(relationship.getLoveInterestId())).thenReturn(null);
+
+        actual = service.update(relationship);
+        assertEquals(ResultType.INVALID, actual.getType());
     }
 
     private Relationship makeRelationship() {
@@ -132,5 +200,21 @@ class RelationshipServiceTest {
         relationship.setLoveInterestId(1);
 
         return relationship;
+    }
+
+    private AppUser makeUser() {
+        AppUser user = new AppUser();
+
+        user.setUserId(1);
+
+        return user;
+    }
+
+    private LoveInterest makeLoveInterest() {
+        LoveInterest loveInterest = new LoveInterest();
+
+        loveInterest.setLoveInterestId(1);
+
+        return loveInterest;
     }
 }

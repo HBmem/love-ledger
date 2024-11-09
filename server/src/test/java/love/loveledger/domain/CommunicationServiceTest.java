@@ -1,8 +1,10 @@
 package love.loveledger.domain;
 
 import love.loveledger.data.CommunicationRepository;
+import love.loveledger.data.RelationshipRepository;
 import love.loveledger.models.Communication;
 import love.loveledger.models.CommunicationType;
+import love.loveledger.models.Relationship;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,8 @@ class CommunicationServiceTest {
 
     @MockBean
     CommunicationRepository communicationRepository;
+    @MockBean
+    RelationshipRepository relationshipRepository;
 
     @Test
     void shouldAdd() {
@@ -29,6 +33,7 @@ class CommunicationServiceTest {
         mockOut.setCommunicationId(4);
 
         when(communicationRepository.add(communication)).thenReturn(mockOut);
+        when(relationshipRepository.findRelationshipById(communication.getRelationshipId())).thenReturn(makeRelationship());
 
         Result<Communication> actual = service.add(communication);
         assertEquals(ResultType.SUCCESS, actual.getType());
@@ -67,6 +72,14 @@ class CommunicationServiceTest {
         communication.setMoodScore(9);
         actual = service.add(communication);
         assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not add when relationship does not exist
+        communication = makeCommunication();
+        communication.setRelationshipId(99);
+
+        when(relationshipRepository.findRelationshipById(communication.getRelationshipId())).thenReturn(null);
+        actual = service.add(communication);
+        assertEquals(ResultType.INVALID, actual.getType());
     }
 
     @Test
@@ -75,6 +88,8 @@ class CommunicationServiceTest {
         communication.setCommunicationId(4);
 
         when(communicationRepository.update(communication)).thenReturn(true);
+        when(relationshipRepository.findRelationshipById(communication.getRelationshipId())).thenReturn(makeRelationship());
+
         Result<Communication> actual = service.update(communication);
         assertEquals(ResultType.SUCCESS, actual.getType());
     }
@@ -85,6 +100,8 @@ class CommunicationServiceTest {
         communication.setCommunicationId(99);
 
         when(communicationRepository.update(communication)).thenReturn(false);
+        when(relationshipRepository.findRelationshipById(communication.getRelationshipId())).thenReturn(makeRelationship());
+
         Result<Communication> actual = service.update(communication);
         assertEquals(ResultType.NOT_FOUND, actual.getType());
     }
@@ -94,26 +111,34 @@ class CommunicationServiceTest {
         Communication communication = makeCommunication();
         communication.setCommunicationId(3);
 
-        // Should not add when type is null
+        // Should not update when type is null
         communication.setType(null);
         Result<Communication> actual = service.update(communication);
         assertEquals(ResultType.INVALID, actual.getType());
 
-        // Should not add when date is null
+        // Should not update when date is null
         communication = makeCommunication();
         communication.setDate(null);
         actual = service.update(communication);
         assertEquals(ResultType.INVALID, actual.getType());
 
-        // Should not add when mood score is less than 1
+        // Should not update when mood score is less than 1
         communication = makeCommunication();
         communication.setMoodScore(0);
         actual = service.update(communication);
         assertEquals(ResultType.INVALID, actual.getType());
 
-        // Should not add when mood score is greater than 5
+        // Should not update when mood score is greater than 5
         communication = makeCommunication();
         communication.setMoodScore(9);
+        actual = service.update(communication);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+        // Should not update when relationship does not exist
+        communication = makeCommunication();
+        communication.setRelationshipId(99);
+
+        when(relationshipRepository.findRelationshipById(communication.getRelationshipId())).thenReturn(null);
         actual = service.update(communication);
         assertEquals(ResultType.INVALID, actual.getType());
     }
@@ -128,5 +153,13 @@ class CommunicationServiceTest {
         communication.setRelationshipId(2);
 
         return communication;
+    }
+
+    private Relationship makeRelationship() {
+        Relationship relationship = new Relationship();
+
+        relationship.setRelationshipId(2);
+
+        return relationship;
     }
 }

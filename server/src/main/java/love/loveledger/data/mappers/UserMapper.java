@@ -1,19 +1,19 @@
 package love.loveledger.data.mappers;
 
 import love.loveledger.models.Gender;
-import love.loveledger.models.User;
+import love.loveledger.models.AppUser;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper implements RowMapper<User> {
+public class UserMapper implements RowMapper<AppUser> {
     @Override
-    public User mapRow(ResultSet resultSet, int i) throws SQLException {
-        User user = new User();
+    public AppUser mapRow(ResultSet resultSet, int i) throws SQLException {
+        AppUser user = new AppUser();
         user.setUserId(resultSet.getInt("user_id"));
         user.setUsername(resultSet.getString("username"));
-        user.setPasswordHash(resultSet.getString("password_hash"));
+        user.setPassword(resultSet.getString("password_hash"));
         user.setEmail(resultSet.getString("email"));
         user.setProfileImageURL(resultSet.getString("profile_image_url"));
         user.setDisabled(resultSet.getBoolean("is_disabled"));

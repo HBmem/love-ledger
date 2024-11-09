@@ -5,7 +5,7 @@ use love_ledger_test;
 create table `user` (
 	user_id int primary key auto_increment,
     username varchar(50) not null unique,
-    password_hash varchar(50) not null,
+    password_hash varchar(2048) not null,
     email varchar(250) not null unique,
     profile_image_url varchar(255),
     is_disabled boolean not null default(0),

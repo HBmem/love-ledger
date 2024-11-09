@@ -2,6 +2,7 @@ package love.loveledger.domain;
 
 import love.loveledger.data.LoveInterestRepository;
 import love.loveledger.data.RelationshipRepository;
+import love.loveledger.data.UserRepository;
 import love.loveledger.models.LoveInterest;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,11 @@ import java.util.List;
 @Service
 public class LoveInterestService {
     private final LoveInterestRepository loveInterestRepository;
-    private final RelationshipRepository relationshipRepository;
+    private final UserRepository userRepository;
 
-    public LoveInterestService(LoveInterestRepository loveInterestRepository, RelationshipRepository relationshipRepository) {
+    public LoveInterestService(LoveInterestRepository loveInterestRepository, UserRepository userRepository) {
         this.loveInterestRepository = loveInterestRepository;
-        this.relationshipRepository = relationshipRepository;
+        this.userRepository = userRepository;
     }
 
     public List<LoveInterest> findAllLoveInterestByUserId(int userId) {
@@ -34,7 +35,7 @@ public class LoveInterestService {
         }
 
         if (loveInterest.getLoveInterestId() != 0) {
-            result.addMessage("love interest cannot be set for 'add' operation", ResultType.INVALID);
+            result.addMessage("Love interest ID cannot be set for an 'add' operation", ResultType.INVALID);
             return result;
         }
 
@@ -51,7 +52,7 @@ public class LoveInterestService {
         }
 
         if (loveInterest.getLoveInterestId() <= 0) {
-            result.addMessage("Love Interest ID must be set for 'update' operation", ResultType.INVALID);
+            result.addMessage("Love Interest ID must be set for an 'update' operation", ResultType.INVALID);
             return result;
         }
 
@@ -71,7 +72,7 @@ public class LoveInterestService {
         Result<LoveInterest> result = new Result<>();
 
         if (Validations.isNullOrBlank(loveInterest.getNickname()) && Validations.isNullOrBlank(loveInterest.getFirstName())) {
-            result.addMessage("must have a nickname or a firstname", ResultType.INVALID);
+            result.addMessage("Must have a nickname or a firstname", ResultType.INVALID);
         }
 
         LocalDate today = LocalDate.now();
@@ -79,8 +80,9 @@ public class LoveInterestService {
             result.addMessage("Birthday must be after today's date", ResultType.INVALID);
         }
 
-//        if (loveInterest.getUserId())
-//        return result;
+        if (userRepository.findByUserId(loveInterest.getUserId()) == null) {
+            result.addMessage("User does not exist", ResultType.INVALID);
+        }
 
         return result;
     }

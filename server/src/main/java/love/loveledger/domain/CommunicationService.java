@@ -1,6 +1,7 @@
 package love.loveledger.domain;
 
 import love.loveledger.data.CommunicationRepository;
+import love.loveledger.data.RelationshipRepository;
 import love.loveledger.models.Communication;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,11 @@ import java.util.List;
 @Service
 public class CommunicationService {
     private final CommunicationRepository communicationRepository;
+    private final RelationshipRepository relationshipRepository;
 
-    public CommunicationService(CommunicationRepository communicationRepository) {
+    public CommunicationService(CommunicationRepository communicationRepository, RelationshipRepository relationshipRepository) {
         this.communicationRepository = communicationRepository;
+        this.relationshipRepository = relationshipRepository;
     }
 
     public List<Communication> findAllCommunicationByRelationshipId(int relationshipId) {
@@ -65,22 +68,26 @@ public class CommunicationService {
         Result<Communication> result = new Result<>();
 
         if (communication == null) {
-            result.addMessage("communication cannot be null", ResultType.INVALID);
+            result.addMessage("Communication cannot be null", ResultType.INVALID);
             return result;
         }
 
         if (communication.getType() == null) {
-            result.addMessage("communication type cannot be null", ResultType.INVALID);
+            result.addMessage("Communication type cannot be null", ResultType.INVALID);
             return result;
         }
 
         if (communication.getDate() == null) {
-            result.addMessage("communication date cannot be null", ResultType.INVALID);
+            result.addMessage("Communication date cannot be null", ResultType.INVALID);
             return result;
         }
 
         if (communication.getMoodScore() <= 1 || communication.getMoodScore() > 5) {
-            result.addMessage("mood score must be between 1 and 5", ResultType.INVALID);
+            result.addMessage("Mood score must be between 1 and 5", ResultType.INVALID);
+        }
+
+        if (relationshipRepository.findRelationshipById(communication.getRelationshipId()) == null) {
+            result.addMessage("Relationship does not exist", ResultType.INVALID);
         }
 
         return result;
