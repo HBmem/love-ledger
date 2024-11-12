@@ -1,7 +1,6 @@
 package love.loveledger.domain;
 
 import love.loveledger.data.LoveInterestRepository;
-import love.loveledger.data.RelationshipRepository;
 import love.loveledger.data.UserRepository;
 import love.loveledger.models.LoveInterest;
 import org.springframework.stereotype.Service;
