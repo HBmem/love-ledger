@@ -61,7 +61,7 @@ public class ReminderJdbcTemplateRepository implements ReminderRepository {
             ps.setDate(2, Date.valueOf(reminder.getDate()));
             ps.setString(3, reminder.getDescription());
             ps.setInt(4, reminder.getUserId());
-            if (reminder.getReminderId() > 0) {
+            if (reminder.getRelationshipId() > 0) {
                 ps.setInt(5, reminder.getRelationshipId());
             } else {
                 ps.setNull(5, Types.INTEGER);

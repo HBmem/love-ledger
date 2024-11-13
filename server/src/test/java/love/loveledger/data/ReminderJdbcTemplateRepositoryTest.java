@@ -75,7 +75,7 @@ class ReminderJdbcTemplateRepositoryTest {
 
         assertEquals(4, actual.getReminderId());
         assertEquals("Valentines Day", actual.getName());
-        assertEquals(LocalDate.of(2023, 2, 14), actual.getDate());
+        assertEquals(LocalDate.now().plusDays(15), actual.getDate());
         assertEquals("First Valentines Day!", actual.getDescription());
         assertEquals(2, actual.getUserId());
         assertEquals(2, actual.getRelationshipId());
@@ -91,7 +91,7 @@ class ReminderJdbcTemplateRepositoryTest {
 
         assertEquals(5, actual.getReminderId());
         assertEquals("Valentines Day", actual.getName());
-        assertEquals(LocalDate.of(2023, 2, 14), actual.getDate());
+        assertEquals(LocalDate.now().plusDays(15), actual.getDate());
         assertEquals("First Valentines Day!", actual.getDescription());
         assertEquals(2, actual.getUserId());
         assertEquals(0, actual.getRelationshipId());
@@ -105,6 +105,7 @@ class ReminderJdbcTemplateRepositoryTest {
 
         reminder.setName("TEST DAY!");
         reminder.setDescription("TEST DESCRIPTION!!");
+        reminder.setRelationshipId(1);
 
         boolean actual = repository.update(reminder);
         assertTrue(actual);
@@ -120,7 +121,7 @@ class ReminderJdbcTemplateRepositoryTest {
         Reminder reminder = new Reminder();
 
         reminder.setName("Valentines Day");
-        reminder.setDate(LocalDate.of(2023, 2, 14));
+        reminder.setDate(LocalDate.now().plusDays(15));
         reminder.setDescription("First Valentines Day!");
         reminder.setUserId(2);
         reminder.setRelationshipId(2);

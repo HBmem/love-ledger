@@ -37,7 +37,7 @@ public class RelationshipService {
         }
 
         if (relationship.getRelationshipId() != 0) {
-            result.addMessage("relationshipId cannot be set for 'add' operation", ResultType.INVALID);
+            result.addMessage("Relationship ID cannot be set for an 'add' operation", ResultType.INVALID);
             return result;
         }
 
@@ -59,7 +59,7 @@ public class RelationshipService {
         }
 
         if (!relationshipRepository.update(relationship)) {
-            String msg = String.format("relationshipId: %s, not found", relationship.getRelationshipId());
+            String msg = String.format("Relationship ID: %s, not found", relationship.getRelationshipId());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
 
