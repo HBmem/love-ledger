@@ -15,11 +15,11 @@ public class UserCredentialDetailsService implements UserDetailsService {
     private UserCredentialRepository userCredentialRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserCredential userCredential = userCredentialRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserCredential userCredential = userCredentialRepository.findByEmail(email);
 
         if (userCredential == null || userCredential.isDisabled()) {
-            throw new UsernameNotFoundException(username + " not found.");
+            throw new UsernameNotFoundException(email + " not found.");
         }
 
         return new UserCredentialDetails(userCredential);

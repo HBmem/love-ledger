@@ -1,12 +1,14 @@
 package com.hbmem.LoveLedger.model;
 
+import java.util.List;
+
 public class UserCredential {
     private int id;
-    private String username;
-    private String password;
     private String email;
+    private String password;
     private boolean disabled;
     private boolean verified;
+    private List<String> roles;
 
     public int getId() {
         return id;
@@ -16,12 +18,12 @@ public class UserCredential {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -30,14 +32,6 @@ public class UserCredential {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public boolean isDisabled() {
@@ -54,5 +48,20 @@ public class UserCredential {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public boolean hasRole(String role) {
+        if (roles == null) {
+            return false;
+        }
+        return roles.contains(role);
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

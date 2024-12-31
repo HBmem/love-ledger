@@ -1,9 +1,11 @@
 package com.hbmem.LoveLedger.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class UserCredentialDetails implements UserDetails {
     private final UserCredential userCredential;
@@ -40,7 +42,9 @@ public class UserCredentialDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return userCredential.getRoles().stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -50,6 +54,6 @@ public class UserCredentialDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userCredential.getUsername();
+        return userCredential.getEmail();
     }
 }

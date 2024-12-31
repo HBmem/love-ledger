@@ -8,7 +8,7 @@ public interface UserCredentialRepository {
     UserCredential findByUserId(int id);
 
     @Transactional
-    UserCredential findByUsername(String username);
+    UserCredential findByEmail(String email);
 
     @Transactional
     UserCredential add(UserCredential userCredential);

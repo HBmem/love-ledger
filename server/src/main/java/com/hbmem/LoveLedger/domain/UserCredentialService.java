@@ -28,11 +28,11 @@ public class UserCredentialService {
         Result<String> result = new Result<>();
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userCredential.getUsername(), userCredential.getPassword())
+                new UsernamePasswordAuthenticationToken(userCredential.getEmail(), userCredential.getPassword())
         );
 
         if (authentication.isAuthenticated()) {
-            result.setPayload(jwtService.generateToken(userCredential.getUsername()));
+            result.setPayload(jwtService.generateToken(userCredential.getEmail()));
         } else {
             result.addMessage("Not Authorized", ResultType.INVALID);
         }
