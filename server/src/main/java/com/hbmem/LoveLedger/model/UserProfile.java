@@ -13,7 +13,7 @@ public class UserProfile {
     private String firstName;
     private String lastName;
     private Gender gender;
-    private int phoneNumber;
+    private String phoneNumber;
     private LocalDate birthday;
     private List<String> likes;
     private List<String> dislikes;
@@ -51,11 +51,11 @@ public class UserProfile {
         this.gender = gender;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

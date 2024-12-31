@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserCredentialService {
     @Autowired
@@ -51,6 +53,7 @@ public class UserCredentialService {
         }
 
         userCredential.setPassword(encoder.encode(userCredential.getPassword()));
+        userCredential.setRoles(List.of("BASIC"));
         result.setPayload(userCredentialRepository.add(userCredential));
         return result;
     }
@@ -61,6 +64,26 @@ public class UserCredentialService {
         if (userCredential == null) {
             result.addMessage("User Credential cannot be null", ResultType.INVALID);
             return result;
+        }
+
+        // Email must not be blank or null
+        if (Validations.isNullOrBlank(userCredential.getEmail())) {
+            result.addMessage("Email must not be empty", ResultType.INVALID);
+        }
+
+        // Password must not be blank or null
+        if (Validations.isNullOrBlank(userCredential.getPassword())) {
+            result.addMessage("Password must not be empty", ResultType.INVALID);
+        }
+
+        // Email must be a valid email
+        if (Validations.validEmail(userCredential.getEmail())) {
+            result.addMessage("Email is not a valid email", ResultType.INVALID);
+        }
+
+        // Password must be longer than 12
+        if (userCredential.getPassword().length() < 12) {
+            result.addMessage("Password must be longer than 12 characters", ResultType.INVALID);
         }
 
         return result;

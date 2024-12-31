@@ -15,4 +15,7 @@ public interface UserCredentialRepository {
 
     @Transactional
     void update(UserCredential userCredential);
+
+    @Transactional
+    boolean disable(int userId);
 }

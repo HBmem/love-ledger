@@ -86,13 +86,27 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     public void update(UserCredential userCredential) {
         final String sql = "update user_credential set " +
                 "password = ?, " +
-                "is_verified = ?";
+                "is_verified = ? " +
+                "where id = ?;";
 
         jdbcTemplate.update(sql,
                 userCredential.getPassword(),
-                userCredential.isVerified());
+                userCredential.isVerified(),
+                userCredential.getId());
 
         updateRoles(userCredential);
+    }
+
+    @Override
+    @Transactional
+    public boolean disable(int userId) {
+        final String sql = "update user_credential set " +
+                "is_disabled = ? " +
+                "where id = ?;";
+
+        return jdbcTemplate.update(sql,
+                true,
+                userId) > 0;
     }
 
     private List<String> findRolesByUserId(int userId) {
@@ -111,7 +125,7 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
 
         for (String roleName : userCredential.getRoles()) {
             String sql = "insert into user_role (user_id, role_id) " +
-                    "select ?, role_id from role where `name` = ?;";
+                    "select ?, id from role where `name` = ?;";
 
             jdbcTemplate.update(sql, userCredential.getId(), roleName);
         }

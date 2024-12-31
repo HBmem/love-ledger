@@ -43,7 +43,7 @@ public class UserCredentialDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return userCredential.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(roleName -> new SimpleGrantedAuthority("ROLE_" + roleName))
                 .collect(Collectors.toList());
     }
 

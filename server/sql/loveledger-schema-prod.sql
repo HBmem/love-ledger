@@ -16,7 +16,7 @@ create table user_profile (
     last_name varchar(50),
     gender varchar(50) not null,
     birthday date not null,
-    phone_number int,
+    phone_number varchar(10),
     likes JSON,
     disliked JSON,
     photo_url text
