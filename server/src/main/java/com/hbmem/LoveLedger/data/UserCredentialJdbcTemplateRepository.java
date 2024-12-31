@@ -83,18 +83,18 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
 
     @Override
     @Transactional
-    public void update(UserCredential userCredential) {
+    public boolean update(UserCredential userCredential) {
         final String sql = "update user_credential set " +
                 "password = ?, " +
                 "is_verified = ? " +
                 "where id = ?;";
 
-        jdbcTemplate.update(sql,
+        updateRoles(userCredential);
+
+        return jdbcTemplate.update(sql,
                 userCredential.getPassword(),
                 userCredential.isVerified(),
-                userCredential.getId());
-
-        updateRoles(userCredential);
+                userCredential.getId()) > 0;
     }
 
     @Override

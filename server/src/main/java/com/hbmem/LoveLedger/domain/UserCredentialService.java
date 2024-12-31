@@ -58,6 +58,26 @@ public class UserCredentialService {
         return result;
     }
 
+    public Result<UserCredential> update(UserCredential userCredential) {
+        Result<UserCredential> result = validate(userCredential);
+
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        if (userCredential.getId() <= 0) {
+            result.addMessage("User does not exist", ResultType.INVALID);
+            return result;
+        }
+
+        if (!userCredentialRepository.update(userCredential)) {
+            String msg = String.format("User ID: %s, not found", userCredential.getId());
+            result.addMessage(msg, ResultType.NOT_FOUND);
+        }
+
+        return result;
+    }
+
     private Result<UserCredential> validate(UserCredential userCredential) {
         Result<UserCredential> result = new Result<>();
 
@@ -76,14 +96,18 @@ public class UserCredentialService {
             result.addMessage("Password must not be empty", ResultType.INVALID);
         }
 
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         // Email must be a valid email
-        if (Validations.validEmail(userCredential.getEmail())) {
+        if (!Validations.validEmail(userCredential.getEmail())) {
             result.addMessage("Email is not a valid email", ResultType.INVALID);
         }
 
         // Password must be longer than 12
-        if (userCredential.getPassword().length() < 12) {
-            result.addMessage("Password must be longer than 12 characters", ResultType.INVALID);
+        if (userCredential.getPassword().length() < 8) {
+            result.addMessage("Password must be 8 or more characters", ResultType.INVALID);
         }
 
         return result;

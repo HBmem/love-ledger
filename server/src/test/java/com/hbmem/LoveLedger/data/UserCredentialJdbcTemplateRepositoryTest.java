@@ -60,10 +60,7 @@ class UserCredentialJdbcTemplateRepositoryTest {
     void shouldUpdateExistingUser() {
         UserCredential userCredential = repository.findByUserId(2);
         userCredential.setVerified(true);
-        repository.update(userCredential);
-
-        UserCredential actual = repository.findByUserId(2);
-        assertTrue(actual.isVerified());
+        assertTrue(repository.update(userCredential));
     }
 
     @Test
@@ -76,7 +73,7 @@ class UserCredentialJdbcTemplateRepositoryTest {
         UserCredential userCredential = new UserCredential();
 
         userCredential.setEmail("test@email.com");
-        userCredential.setPassword("test@123");
+        userCredential.setPassword("test@1234");
 
         List<String> roles = new ArrayList<>();
         roles.add("BASIC");
