@@ -18,7 +18,7 @@ create table user_profile (
     birthday date not null,
     phone_number varchar(10),
     likes JSON,
-    disliked JSON,
+    dislikes JSON,
     photo_url text,
     constraint fk_user_credential_profile
 		foreign key (id)
@@ -43,9 +43,44 @@ create table user_role (
         references `role`(id)
 );
 
+create table love_interest (
+	id int primary key auto_increment,
+    nickname varchar(50),
+    first_name varchar(50),
+    last_name varchar(50),
+    gender varchar(20) not null,
+    birthday date,
+    likes JSON,
+    dislikes JSON,
+    photo_url text,
+    user_id int not null,
+    constraint fk_love_interest_user_id
+		foreign key (user_id)
+        references user_credential(id)
+);
+
+create table relationship (
+	id int primary key auto_increment,
+	start_date date not null,
+    end_date date,
+    relationship_status varchar(50) not null,
+    importance_level int not null,
+    is_official boolean not null default(0),
+    user_id int not null,
+    love_interest_id int not null,
+    constraint fk_relationship_user_id
+		foreign key (user_id)
+        references user_credential(id),
+	constraint fk_relationship_love_interest_id
+		foreign key (love_interest_id)
+        references love_interest(id)
+);
+
 delimiter //
 create procedure set_known_good_state()
 begin
+	delete from love_interest;
+    alter table love_interest auto_increment = 1;
 	delete from user_role;
     alter table user_role auto_increment = 1;
     delete from `role`;
@@ -56,14 +91,14 @@ begin
     alter table user_credential auto_increment = 1;
     
     insert into user_credential(id, email, `password`, is_verified, is_disabled) values
-	(1, "adam@email.com", "$2y$12$09myHJmbBR6J4nbT4j8yluvOZwOFfWebVpVldcQhHfpS5xmWrbxH2", false, false), -- password: a@123
-    (2, "brit@email.com", "$2y$12$Uj3aXL0vXAFt.AFtyEw19uDs4Jv0jN3oRR0aet.PoC/aTcaRFIoke", false, false), -- password: b@123
-    (3, "carl@email.com", "$2y$12$JGt..bPM5UYQG6l.yIngN.frjBICxIKAdsl.cdI3m08zOzoazUjdy", false, false); -- password: c@123
+		(1, "adam@email.com", "$2y$12$09myHJmbBR6J4nbT4j8yluvOZwOFfWebVpVldcQhHfpS5xmWrbxH2", false, false), -- password: a@123
+		(2, "brit@email.com", "$2y$12$Uj3aXL0vXAFt.AFtyEw19uDs4Jv0jN3oRR0aet.PoC/aTcaRFIoke", false, false), -- password: b@123
+		(3, "carl@email.com", "$2y$12$JGt..bPM5UYQG6l.yIngN.frjBICxIKAdsl.cdI3m08zOzoazUjdy", false, false); -- password: c@123
     
-    insert into user_profile(id, first_name, last_name, gender, birthday, phone_number, likes, disliked, photo_url) values
-    (1, "Adam", "Smith", "MALE", "1991-01-04", "1234567890", JSON_ARRAY('Football', 'Traveling', 'Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), ""),
-    (2, "Brit", "Taylor", "FEMALE", "1995-01-15", "1122334455", JSON_ARRAY('Photography', 'Cycling', 'Poetry'), JSON_ARRAY('Hot Weather', 'Seafood'), ""),
-    (3, "Carl", "Bennet", "NON_BINARY", "1985-08-23", "6677889900", JSON_ARRAY('Dancing', 'Painting', 'Gardening'), JSON_ARRAY('Fast Food', 'Long Meetings'), "");
+    insert into user_profile(id, first_name, last_name, gender, birthday, phone_number, likes, dislikes, photo_url) values
+		(1, "Adam", "Smith", "MALE", "1991-01-04", "1234567890", JSON_ARRAY('Football', 'Traveling', 'Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), ""),
+		(2, "Brit", "Taylor", "FEMALE", "1995-01-15", "1122334455", JSON_ARRAY('Photography', 'Cycling', 'Poetry'), JSON_ARRAY('Hot Weather', 'Seafood'), ""),
+		(3, "Carl", "Bennet", "NON_BINARY", "1985-08-23", "6677889900", JSON_ARRAY('Dancing', 'Painting', 'Gardening'), JSON_ARRAY('Fast Food', 'Long Meetings'), "");
     
 	insert into `role`(id, `name`) values
 		(1, "ADMIN"),
@@ -74,5 +109,10 @@ begin
 		(1, 1),
         (2, 2),
         (3, 3);
+        
+	insert into love_interest(id, nickname, first_name, last_name, gender, birthday, likes, dislikes, photo_url, user_id) values
+		(1, "", "Evan", "Williams", "MALE", "1992-03-10", JSON_ARRAY('Fishing', 'Cooking', 'Running'), JSON_ARRAY('Late Nights', 'Cold Weather'), "", 2),
+        (2, "Benny", "", "", "NON_BINARY", "1995-08-23", JSON_ARRAY('Football', 'Traveling', 'Old Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), "", 3),
+        (3, "", "Alice", "Johnson", "FEMALE", "1990-05-12", JSON_ARRAY('Reading', 'Hiking', 'Cooking'), JSON_ARRAY('Spicy Food', 'Crowded Places'), "", 1);
 end //
 delimiter ;

@@ -57,8 +57,8 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     @Override
     @Transactional
     public UserCredential add(UserCredential userCredential) {
-        final String sql = "insert into user_credential(email, `password`, is_verified, is_disabled) "
-                + "values(?,?,?,?);";
+        final String sql = "INSERT INTO user_credential(email, `password`, is_verified, is_disabled) "
+                + "VALUES(?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -84,10 +84,10 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     @Override
     @Transactional
     public boolean update(UserCredential userCredential) {
-        final String sql = "update user_credential set " +
+        final String sql = "UPDATE user_credential SET " +
                 "password = ?, " +
                 "is_verified = ? " +
-                "where id = ?;";
+                "WHERE id = ?;";
 
         updateRoles(userCredential);
 
@@ -100,9 +100,9 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     @Override
     @Transactional
     public boolean disable(int userId) {
-        final String sql = "update user_credential set " +
+        final String sql = "UPDATE user_credential SET " +
                 "is_disabled = ? " +
-                "where id = ?;";
+                "WHERE id = ?;";
 
         return jdbcTemplate.update(sql,
                 true,
@@ -110,22 +110,22 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     }
 
     private List<String> findRolesByUserId(int userId) {
-        final String sql = "select r.`name` " +
-                "from user_role ur " +
-                "inner join `role` r on ur.role_id = r.id " +
-                "where ur.user_id = ?;";
+        final String sql = "SELECT r.`name` " +
+                "FROM user_role ur " +
+                "INNER JOIN `role` r ON ur.role_id = r.id " +
+                "WHERE ur.user_id = ?;";
         return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("name"), userId);
     }
     private void updateRoles(UserCredential userCredential) {
-        jdbcTemplate.update("delete from user_role where user_id = ?;", userCredential.getId());
+        jdbcTemplate.update("DELETE FROM user_role WHERE user_id = ?;", userCredential.getId());
 
         if (userCredential.getRoles() == null) {
             return;
         }
 
         for (String roleName : userCredential.getRoles()) {
-            String sql = "insert into user_role (user_id, role_id) " +
-                    "select ?, id from role where `name` = ?;";
+            String sql = "INSERT INTO user_role (user_id, role_id) " +
+                    "SELECT ?, id FROM role WHERE `name` = ?;";
 
             jdbcTemplate.update(sql, userCredential.getId(), roleName);
         }

@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserCredentialJdbcTemplateRepositoryTest {
     @Autowired
     UserCredentialJdbcTemplateRepository repository;
-
     @Autowired
     KnownGoodState knownGoodState;
 
@@ -49,7 +48,7 @@ class UserCredentialJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void shouldAddNewUserCredential() {
+    void shouldAdd() {
         UserCredential userCredential = makeUserCredential();
         UserCredential actual = repository.add(userCredential);
         assertNotNull(actual);
@@ -57,16 +56,23 @@ class UserCredentialJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void shouldUpdateExistingUser() {
+    void shouldUpdate() {
         UserCredential userCredential = repository.findByUserId(2);
+        assertNotNull(userCredential);
+
         userCredential.setVerified(true);
-        assertTrue(repository.update(userCredential));
+
+        boolean actual = repository.update(userCredential);
+        assertTrue(actual);
     }
 
     @Test
-    void shouldDisableExitingUser() {
+    void shouldDisable() {
         UserCredential userCredential = repository.findByUserId(3);
-        assertTrue(repository.disable(userCredential.getId()));
+        assertNotNull(userCredential);
+
+        boolean actual = repository.disable(userCredential.getId());
+        assertTrue(actual);
     }
 
     private UserCredential makeUserCredential() {
