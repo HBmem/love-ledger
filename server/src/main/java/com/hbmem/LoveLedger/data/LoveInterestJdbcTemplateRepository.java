@@ -66,7 +66,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
             }
 
             ps.setString(8, loveInterest.getPhotoUrl());
-            ps.setInt(9, loveInterest.getUser_id());
+            ps.setInt(9, loveInterest.getUserId());
             return ps;
         }, keyHolder);
 
@@ -110,7 +110,7 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
             }
 
             ps.setString(8, loveInterest.getPhotoUrl());
-            ps.setInt(9, loveInterest.getUser_id());
+            ps.setInt(9, loveInterest.getUserId());
             ps.setInt(10, loveInterest.getId());
             return ps;
         }) > 0;

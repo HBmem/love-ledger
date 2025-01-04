@@ -39,7 +39,7 @@ public class LoveInterestMapper implements RowMapper<LoveInterest> {
         }
 
         loveInterest.setPhotoUrl(resultSet.getString("photo_url"));
-        loveInterest.setUser_id(resultSet.getInt("user_id"));
+        loveInterest.setUserId(resultSet.getInt("user_id"));
 
         return loveInterest;
     }

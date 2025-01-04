@@ -36,6 +36,7 @@ public class UserCredentialController {
         return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
     }
 
+    // TODO: Create a model to join user credential and profile
     @PostMapping("/signup")
     public ResponseEntity<Object> signup(@RequestBody UserCredential userCredential) {
         Result<UserCredential> result = userCredentialService.signup(userCredential);

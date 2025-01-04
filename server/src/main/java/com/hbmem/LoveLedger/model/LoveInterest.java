@@ -1,7 +1,6 @@
 package com.hbmem.LoveLedger.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class LoveInterest {
@@ -14,7 +13,7 @@ public class LoveInterest {
     private List<String> likes;
     private List<String> dislikes;
     private String photoUrl;
-    private int user_id;
+    private int userId;
 
     public int getId() {
         return id;
@@ -102,11 +101,11 @@ public class LoveInterest {
         this.photoUrl = photoUrl;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

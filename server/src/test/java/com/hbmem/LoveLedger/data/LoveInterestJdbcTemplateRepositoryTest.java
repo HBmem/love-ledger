@@ -50,7 +50,7 @@ class LoveInterestJdbcTemplateRepositoryTest {
         assertEquals(dislikes, loveInterest.getDislikes());
 
         assertEquals("", loveInterest.getPhotoUrl());
-        assertEquals(2, loveInterest.getUser_id());
+        assertEquals(2, loveInterest.getUserId());
     }
 
     @Test
@@ -93,11 +93,11 @@ class LoveInterestJdbcTemplateRepositoryTest {
         loveInterest.setFirstName("Emma");
         loveInterest.setLastName("Doe");
         loveInterest.setGender(Gender.FEMALE);
-        loveInterest.setBirthday(LocalDate.of(1998, 12, 26)); // Example birthday
+        loveInterest.setBirthday(LocalDate.of(1998, 12, 26));
         loveInterest.setLikes(Arrays.asList("Reading", "Gardening", "Yoga"));
         loveInterest.setDislikes(Arrays.asList("Crowds", "Spicy Food"));
         loveInterest.setPhotoUrl("");
-        loveInterest.setUser_id(2);
+        loveInterest.setUserId(2);
 
         return loveInterest;
     }
