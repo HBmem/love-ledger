@@ -76,9 +76,50 @@ create table relationship (
         references love_interest(id)
 );
 
+create table milestone (
+	id int primary key auto_increment,
+    `name` varchar(250) not null,
+    `description` text not null,
+    `type` varchar(50) not null
+);
+
+create table user_milestone (
+	user_id int not null,
+    milestone_id int not null,
+    date_received date not null,
+    constraint pk_user_milestone
+		primary key (user_id, milestone_id),
+	constraint fk_user_milestone_user_id
+		foreign key (user_id)
+        references user_credential(id),
+	constraint fk_user_milestone_milestone_id
+		foreign key (milestone_id)
+        references milestone(id)
+);
+
+create table relationship_milestone (
+	relationship_id int not null,
+    milestone_id int not null,
+    date_received date not null,
+    constraint pk_relationship_milestone
+		primary key (relationship_id, milestone_id),
+	constraint fk_relationship_milestone_relationship_id
+		foreign key (relationship_id)
+        references relationship(id),
+	constraint fk_relationship_milestone_milestone_id
+		foreign key (milestone_id)
+        references milestone(id)
+);
+
 delimiter //
 create procedure set_known_good_state()
 begin
+	delete from relationship_milestone;
+    alter table relationship_milestone auto_increment = 1;
+    delete from user_milestone;
+    alter table user_milestone auto_increment = 1;
+	delete from milestone;
+    alter table milestone auto_increment = 1;
 	delete from relationship;
     alter table relationship auto_increment = 1;
 	delete from love_interest;
@@ -121,5 +162,10 @@ begin
 		(1, "2023-02-12", null, "ENGAGED", 5, true, 2, 1),
         (2, "2024-06-05", null, "DATING", 3, false, 3, 2),
         (3, "2024-02-06", "2024-12-21", "TALKING", 1, false, 1, 3);
+        
+	insert into milestone(id, `name`, `description`, `type`) values
+		(1, ""),
+        (),
+        ();
 end //
 delimiter ;

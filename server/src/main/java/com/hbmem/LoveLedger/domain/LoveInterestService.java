@@ -23,8 +23,8 @@ public class LoveInterestService {
         return repository.findLoveInterestById(id);
     }
 
-    public List<LoveInterest> findAllLoveInterestByUserId(int user_id) {
-        return repository.findAllLoveInterestByUserId(user_id);
+    public List<LoveInterest> findAllLoveInterestByUserId(int userId) {
+        return repository.findAllLoveInterestByUserId(userId);
     }
 
     public Result<LoveInterest> add(LoveInterest loveInterest) throws JsonProcessingException {
@@ -69,6 +69,11 @@ public class LoveInterestService {
 
     private Result<LoveInterest> validate(LoveInterest loveInterest) {
         Result<LoveInterest> result = new Result<>();
+
+        if (loveInterest == null) {
+            result.addMessage("Love Interest cannot be null", ResultType.INVALID);
+            return result;
+        }
 
         if (Validations.isNullOrBlank(loveInterest.getNickname()) && Validations.isNullOrBlank(loveInterest.getFirstName())) {
             result.addMessage("Love Interest must have a nickname or a firstname", ResultType.INVALID);
