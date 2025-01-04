@@ -79,6 +79,8 @@ create table relationship (
 delimiter //
 create procedure set_known_good_state()
 begin
+	delete from relationship;
+    alter table relationship auto_increment = 1;
 	delete from love_interest;
     alter table love_interest auto_increment = 1;
 	delete from user_role;
@@ -114,5 +116,10 @@ begin
 		(1, "", "Evan", "Williams", "MALE", "1992-03-10", JSON_ARRAY('Fishing', 'Cooking', 'Running'), JSON_ARRAY('Late Nights', 'Cold Weather'), "", 2),
         (2, "Benny", "", "", "NON_BINARY", "1995-08-23", JSON_ARRAY('Football', 'Traveling', 'Old Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), "", 3),
         (3, "", "Alice", "Johnson", "FEMALE", "1990-05-12", JSON_ARRAY('Reading', 'Hiking', 'Cooking'), JSON_ARRAY('Spicy Food', 'Crowded Places'), "", 1);
+	
+    insert into relationship(id, start_date, end_date, relationship_status, importance_level, is_official, user_id, love_interest_id) values
+		(1, "2023-02-12", null, "ENGAGED", 5, true, 2, 1),
+        (2, "2024-06-05", null, "DATING", 3, false, 3, 2),
+        (3, "2024-02-06", "2024-12-21", "TALKING", 1, false, 1, 3);
 end //
 delimiter ;

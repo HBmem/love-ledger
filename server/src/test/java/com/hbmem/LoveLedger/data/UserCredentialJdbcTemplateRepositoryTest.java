@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class UserCredentialJdbcTemplateRepositoryTest {
     @Autowired
-    UserCredentialJdbcTemplateRepository repository;
+    UserCredentialRepository repository;
     @Autowired
     KnownGoodState knownGoodState;
 
