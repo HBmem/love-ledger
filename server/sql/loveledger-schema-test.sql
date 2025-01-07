@@ -6,6 +6,7 @@ create table user_credential (
 	id int primary key auto_increment,
     email varchar(250) unique,
     `password` varchar(100) not null,
+    phone_number varchar(10),
     is_verified boolean not null default(0),
     is_disabled boolean not null default(0)
 );
@@ -16,7 +17,6 @@ create table user_profile (
     last_name varchar(50),
     gender varchar(50) not null,
     birthday date not null,
-    phone_number varchar(10),
     likes JSON,
     dislikes JSON,
     photo_url text,
@@ -133,15 +133,15 @@ begin
     delete from user_credential;
     alter table user_credential auto_increment = 1;
     
-    insert into user_credential(id, email, `password`, is_verified, is_disabled) values
-		(1, "adam@email.com", "$2y$12$09myHJmbBR6J4nbT4j8yluvOZwOFfWebVpVldcQhHfpS5xmWrbxH2", false, false), -- password: a@123
-		(2, "brit@email.com", "$2y$12$Uj3aXL0vXAFt.AFtyEw19uDs4Jv0jN3oRR0aet.PoC/aTcaRFIoke", false, false), -- password: b@123
-		(3, "carl@email.com", "$2y$12$JGt..bPM5UYQG6l.yIngN.frjBICxIKAdsl.cdI3m08zOzoazUjdy", false, false); -- password: c@123
+    insert into user_credential(id, email, `password`, phone_number, is_verified, is_disabled) values
+		(1, "adam@email.com", "$2y$12$09myHJmbBR6J4nbT4j8yluvOZwOFfWebVpVldcQhHfpS5xmWrbxH2", "1234567890", false, false), -- password: a@123
+		(2, "brit@email.com", "$2y$12$Uj3aXL0vXAFt.AFtyEw19uDs4Jv0jN3oRR0aet.PoC/aTcaRFIoke", "1122334455", false, false), -- password: b@123
+		(3, "carl@email.com", "$2y$12$JGt..bPM5UYQG6l.yIngN.frjBICxIKAdsl.cdI3m08zOzoazUjdy", "6677889900", false, false); -- password: c@123
     
-    insert into user_profile(id, first_name, last_name, gender, birthday, phone_number, likes, dislikes, photo_url) values
-		(1, "Adam", "Smith", "MALE", "1991-01-04", "1234567890", JSON_ARRAY('Football', 'Traveling', 'Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), ""),
-		(2, "Brit", "Taylor", "FEMALE", "1995-01-15", "1122334455", JSON_ARRAY('Photography', 'Cycling', 'Poetry'), JSON_ARRAY('Hot Weather', 'Seafood'), ""),
-		(3, "Carl", "Bennet", "NON_BINARY", "1985-08-23", "6677889900", JSON_ARRAY('Dancing', 'Painting', 'Gardening'), JSON_ARRAY('Fast Food', 'Long Meetings'), "");
+    insert into user_profile(id, first_name, last_name, gender, birthday, likes, dislikes, photo_url) values
+		(1, "Adam", "Smith", "MALE", "1991-01-04", JSON_ARRAY('Football', 'Traveling', 'Video Games'), JSON_ARRAY('Loud Music', 'Waiting in Line'), ""),
+		(2, "Brit", "Taylor", "FEMALE", "1995-01-15", JSON_ARRAY('Photography', 'Cycling', 'Poetry'), JSON_ARRAY('Hot Weather', 'Seafood'), ""),
+		(3, "Carl", "Bennet", "NON_BINARY", "1985-08-23", JSON_ARRAY('Dancing', 'Painting', 'Gardening'), JSON_ARRAY('Fast Food', 'Long Meetings'), "");
     
 	insert into `role`(id, `name`) values
 		(1, "ADMIN"),
@@ -163,9 +163,9 @@ begin
         (2, "2024-06-05", null, "DATING", 3, false, 3, 2),
         (3, "2024-02-06", "2024-12-21", "TALKING", 1, false, 1, 3);
         
-	insert into milestone(id, `name`, `description`, `type`) values
-		(1, ""),
-        (),
-        ();
+	-- insert into milestone(id, `name`, `description`, `type`) values
+-- 		(1, ""),
+--         (),
+--         ();
 end //
 delimiter ;

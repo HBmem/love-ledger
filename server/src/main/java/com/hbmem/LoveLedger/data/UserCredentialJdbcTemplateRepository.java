@@ -57,16 +57,17 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     @Override
     @Transactional
     public UserCredential add(UserCredential userCredential) {
-        final String sql = "INSERT INTO user_credential(email, `password`, is_verified, is_disabled) "
-                + "VALUES(?,?,?,?);";
+        final String sql = "INSERT INTO user_credential(email, `password`, phone_number, is_verified, is_disabled) "
+                + "VALUES(?,?,?,?,?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, userCredential.getEmail());
             ps.setString(2, userCredential.getPassword());
-            ps.setBoolean(3, userCredential.isVerified());
-            ps.setBoolean(4, userCredential.isDisabled());
+            ps.setString(3, userCredential.getPhoneNumber());
+            ps.setBoolean(4, userCredential.isVerified());
+            ps.setBoolean(5, userCredential.isDisabled());
             return ps;
         }, keyHolder);
 
@@ -86,6 +87,7 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
     public boolean update(UserCredential userCredential) {
         final String sql = "UPDATE user_credential SET " +
                 "password = ?, " +
+                "phone_number = ?, " +
                 "is_verified = ? " +
                 "WHERE id = ?;";
 
@@ -93,6 +95,7 @@ public class UserCredentialJdbcTemplateRepository implements UserCredentialRepos
 
         return jdbcTemplate.update(sql,
                 userCredential.getPassword(),
+                userCredential.getPhoneNumber(),
                 userCredential.isVerified(),
                 userCredential.getId()) > 0;
     }

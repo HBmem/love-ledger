@@ -6,6 +6,7 @@ public class UserCredential {
     private int id;
     private String email;
     private String password;
+    private String phoneNumber;
     private boolean disabled;
     private boolean verified;
     private List<String> roles;
@@ -32,6 +33,14 @@ public class UserCredential {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isDisabled() {

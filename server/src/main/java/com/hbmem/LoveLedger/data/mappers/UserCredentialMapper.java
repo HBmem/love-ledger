@@ -14,6 +14,7 @@ public class UserCredentialMapper implements RowMapper<UserCredential> {
         userCredential.setId(resultSet.getInt("id"));
         userCredential.setEmail(resultSet.getString("email"));
         userCredential.setPassword(resultSet.getString("password"));
+        userCredential.setPhoneNumber(resultSet.getString("phone_number"));
         userCredential.setDisabled(resultSet.getBoolean("is_disabled"));
         userCredential.setVerified(resultSet.getBoolean("is_verified"));
 

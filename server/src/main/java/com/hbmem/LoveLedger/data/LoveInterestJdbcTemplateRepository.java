@@ -118,6 +118,6 @@ public class LoveInterestJdbcTemplateRepository implements LoveInterestRepositor
 
     @Override
     public boolean delete(int id) {
-        return jdbcTemplate.update("DELETE from love_interest WHERE id = ?;", id) > 0;
+        return jdbcTemplate.update("DELETE FROM love_interest WHERE id = ?;", id) > 0;
     }
 }

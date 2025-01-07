@@ -13,7 +13,6 @@ public class UserProfile {
     private String firstName;
     private String lastName;
     private Gender gender;
-    private String phoneNumber;
     private LocalDate birthday;
     private List<String> likes;
     private List<String> dislikes;
@@ -51,14 +50,6 @@ public class UserProfile {
         this.gender = gender;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -71,12 +62,26 @@ public class UserProfile {
         return likes;
     }
 
+    public boolean hasLike(String like) {
+        if (likes == null) {
+            return false;
+        }
+        return likes.contains(like);
+    }
+
     public void setLikes(List<String> likes) {
         this.likes = likes;
     }
 
     public List<String> getDislikes() {
         return dislikes;
+    }
+
+    public boolean hasDislike(String dislike) {
+        if (dislikes == null) {
+            return false;
+        }
+        return dislikes.contains(dislike);
     }
 
     public void setDislikes(List<String> dislikes) {

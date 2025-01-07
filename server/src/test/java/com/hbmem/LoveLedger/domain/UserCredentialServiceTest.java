@@ -166,6 +166,7 @@ class UserCredentialServiceTest {
 
         userCredential.setEmail("test@realemail.com");
         userCredential.setPassword("test@123");
+        userCredential.setPhoneNumber("0987654321");
 
         List<String> roles = new ArrayList<>();
         roles.add("BASIC");
