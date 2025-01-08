@@ -133,8 +133,7 @@ class LoveInterestServiceTest {
     @Test
     void shouldNotUpdateWhenMissing() {
         LoveInterest loveInterest = makeLoveInterest();
-        loveInterest.setUserId(99);
-        loveInterest.setId(1);
+        loveInterest.setId(99);
 
         when(loveInterestRepository.update(loveInterest)).thenReturn(true);
         when(userCredentialRepository.findByUserId(loveInterest.getUserId())).thenReturn(makeUser());

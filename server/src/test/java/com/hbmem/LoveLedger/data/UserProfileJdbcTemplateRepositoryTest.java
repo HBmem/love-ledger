@@ -32,7 +32,7 @@ class UserProfileJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindById() {
-        UserProfile userProfile = repository.findByUserId(1);
+        UserProfile userProfile = repository.findByUserProfileId(1);
         assertNotNull(userProfile);
         assertEquals(1, userProfile.getId());
         assertEquals("Adam", userProfile.getFirstName());
@@ -67,7 +67,7 @@ class UserProfileJdbcTemplateRepositoryTest {
 
     @Test
     void shouldUpdate() {
-        UserProfile userProfile = repository.findByUserId(2);
+        UserProfile userProfile = repository.findByUserProfileId(2);
         assertNotNull(userProfile);
 
         userProfile.setFirstName("Testing");

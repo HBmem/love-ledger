@@ -53,6 +53,7 @@ public class LoveInterestService {
 
         if (loveInterest.getId() <= 0) {
             result.addMessage("Love Interest Id must be set for 'update' operations", ResultType.INVALID);
+            return result;
         }
 
         if (!repository.update(loveInterest)) {

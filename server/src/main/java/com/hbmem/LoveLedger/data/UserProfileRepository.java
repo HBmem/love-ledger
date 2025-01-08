@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hbmem.LoveLedger.model.UserProfile;
 
 public interface UserProfileRepository {
-    UserProfile findByUserId(int id);
+    UserProfile findByUserProfileId(int id);
 
     UserProfile add(UserProfile userProfile) throws JsonProcessingException;
 

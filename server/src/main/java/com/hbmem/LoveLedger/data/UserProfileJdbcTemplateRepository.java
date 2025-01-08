@@ -22,7 +22,7 @@ public class UserProfileJdbcTemplateRepository implements UserProfileRepository 
     }
 
     @Override
-    public UserProfile findByUserId(int id) {
+    public UserProfile findByUserProfileId(int id) {
         final String sql = "SELECT * " +
                 "FROM user_profile " +
                 "WHERE id = ?;";
