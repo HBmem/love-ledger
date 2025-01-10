@@ -80,15 +80,15 @@ create table milestone (
 	id int primary key auto_increment,
     `name` varchar(250) not null,
     `description` text not null,
-    `type` varchar(50) not null
+    `type` varchar(50) not null,
+    `condition` JSON not null
 );
 
 create table user_milestone (
+	id int primary key auto_increment,
 	user_id int not null,
     milestone_id int not null,
-    date_received date not null,
-    constraint pk_user_milestone
-		primary key (user_id, milestone_id),
+    achieved_at date not null,
 	constraint fk_user_milestone_user_id
 		foreign key (user_id)
         references user_credential(id),
@@ -98,11 +98,10 @@ create table user_milestone (
 );
 
 create table relationship_milestone (
+	id int primary key auto_increment,
 	relationship_id int not null,
     milestone_id int not null,
-    date_received date not null,
-    constraint pk_relationship_milestone
-		primary key (relationship_id, milestone_id),
+    achieved_at date not null,
 	constraint fk_relationship_milestone_relationship_id
 		foreign key (relationship_id)
         references relationship(id),
@@ -163,9 +162,9 @@ begin
         (2, "2024-06-05", null, "DATING", 3, false, 3, 2),
         (3, "2024-02-06", "2024-12-21", "TALKING", 1, false, 1, 3);
         
-	-- insert into milestone(id, `name`, `description`, `type`) values
--- 		(1, ""),
---         (),
---         ();
+	insert into milestone(id, `name`, `description`, `type`, `condition`) values
+		(1, "Six Month Anniversary", "Your relationship has lasted 6 months", "RELATIONSHIP", '{"type": "RELATIONSHIP", "condition": {"duration": "6 months"}}'),
+        (2, "1 Year Old", "You have had your account for one year", "USER", '{"type": "USER", "condition": {"accountAge": "1 year"}}'),
+        (3, "Valentines Day", "You celebrated valentines day with [NAME]", "RELATIONSHIP", '{"type": "RELATIONSHIP", "condition": {"event": "Valentine\'s Day"}}');
 end //
 delimiter ;
